@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
@@ -33,6 +34,15 @@ public class LoginPageController implements Initializable{
     private ComboBox roleBox;
 
     @FXML
+    private Pane loginPane;
+
+    @FXML
+    private Label labelBox;
+
+    @FXML
+    private TextField codeBox;
+
+    @FXML
     public void onRegisterButtonClicked(){
         System.out.println("Register Clicked");
         registerButton.setVisible(false);
@@ -40,6 +50,22 @@ public class LoginPageController implements Initializable{
         registerPane.setVisible(true);
 
     }
+
+    @FXML
+    public void onLoginButtonClicked(){
+        System.out.println("Login clicked");
+        loginButton.setVisible(false);
+        registerButton.setVisible(!registerButton.isVisible());
+        loginPane.setVisible(true);
+
+   }
+
+   @FXML
+   public void onImNotARobotClicked(){
+       System.out.println("Checked");
+       labelBox.setVisible(true);
+       codeBox.setVisible(true);
+   }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
