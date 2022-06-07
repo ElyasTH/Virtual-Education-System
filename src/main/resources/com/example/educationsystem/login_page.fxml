@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.educationsystem.LoginPage">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!"/>
-</VBox>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.LoginPageController">
+   <children>
+      <Pane fx:id="registerPane" layoutX="15.0" layoutY="35.0" prefHeight="342.0" prefWidth="562.0" visible="false">
+         <children>
+            <TextField fx:id="firstnameField" layoutX="33.0" layoutY="30.0" promptText="Firstname" />
+            <TextField fx:id="lastnameField" layoutX="224.0" layoutY="30.0" promptText="Lastname" />
+            <TextField fx:id="majoriField" layoutX="224.0" layoutY="84.0" promptText="Major" />
+            <TextField fx:id="IdField" layoutX="33.0" layoutY="84.0" promptText="ID" />
+            <TextField fx:id="emailField" layoutX="33.0" layoutY="145.0" promptText="Email" />
+            <TextField fx:id="phoneField" layoutX="224.0" layoutY="145.0" promptText="Phone" />
+            <TextField fx:id="usernameField" layoutX="33.0" layoutY="208.0" promptText="Username" />
+            <PasswordField fx:id="passwordRepField" layoutX="224.0" layoutY="267.0" promptText="Repeat password" />
+            <PasswordField fx:id="passwordField" layoutX="33.0" layoutY="267.0" promptText="Password" />
+            <ComboBox fx:id="roleBox" layoutX="228.0" layoutY="212.0" prefWidth="150.0" promptText="Role" />
+            
+            <Button fx:id="imageUploadButton" layoutX="437.0" layoutY="197.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="106.0" text="Upload image" />
+            <ImageView fitHeight="134.0" fitWidth="143.0" layoutX="398.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../avatar2.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="247.0" layoutY="309.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="86.0" text="Sign Up" />
+         </children>
+      </Pane>
+      <Button fx:id="registerButton" layoutX="250.0" layoutY="135.0" mnemonicParsing="false" onAction="#onRegisterButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Register" />
+      <Button fx:id="loginButton" layoutX="250.0" layoutY="218.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="99.0" text="Login" />
+   </children>
+</Pane>
