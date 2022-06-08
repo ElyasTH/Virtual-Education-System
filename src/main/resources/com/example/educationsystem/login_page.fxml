@@ -9,6 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.LoginPageController">
    <children>
@@ -36,15 +37,23 @@
       </Pane>
       <Pane fx:id="loginPane" layoutX="15.0" layoutY="19.0" prefHeight="374.0" prefWidth="562.0" visible="false">
          <children>
-            <TextField layoutX="188.0" layoutY="90.0" promptText="ID" />
-            <Button layoutX="236.0" layoutY="274.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="74.0" text="Login" />
-            <Label fx:id="labelBox" layoutX="216.0" layoutY="208.0" prefHeight="21.0" prefWidth="113.0" text="Label" visible="false" />
-            <TextField fx:id="codeBox" layoutX="192.0" layoutY="229.0" prefHeight="31.0" prefWidth="161.0" promptText="Enter the number" visible="false" />
-            <PasswordField layoutX="188.0" layoutY="133.0" promptText="Password" />
-            <CheckBox layoutX="197.0" layoutY="187.0" mnemonicParsing="false" onAction="#onImNotARobotClicked" prefHeight="21.0" prefWidth="150.0" text="I'm NOT a robot" />
+            <TextField layoutX="214.0" layoutY="54.0" promptText="ID" />
+            <Button fx:id="signInButton" layoutX="271.0" layoutY="251.0" mnemonicParsing="false" onAction="#onSignInButtonClicked" prefHeight="38.0" prefWidth="74.0" text="Sign In" />
+            <Label fx:id="botCodeLabel" layoutX="251.0" layoutY="168.0" prefHeight="21.0" prefWidth="113.0" text="0" textAlignment="CENTER" textFill="#393737" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <TextField fx:id="botCodeField" layoutX="228.0" layoutY="189.0" prefHeight="31.0" prefWidth="160.0" promptText="Enter the number" visible="false" />
+            <PasswordField layoutX="214.0" layoutY="106.0" promptText="Password" />
+            <CheckBox fx:id="checkRobotBox" layoutX="232.0" layoutY="147.0" mnemonicParsing="false" onAction="#onImNotARobotClicked" prefHeight="21.0" prefWidth="150.0" text="I'm NOT a robot" />
          </children>
       </Pane>
       <Button fx:id="registerButton" layoutX="250.0" layoutY="135.0" mnemonicParsing="false" onAction="#onRegisterButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Register" />
       <Button fx:id="loginButton" layoutX="250.0" layoutY="218.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Login" />
+      <Label fx:id="errorLabel" layoutX="207.0" layoutY="14.0" prefHeight="21.0" prefWidth="221.0" textFill="#c91f1f" visible="false">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

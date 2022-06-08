@@ -1,16 +1,16 @@
 package com.example.educationsystem;
 
+import Exceptions.EmptyBotCodeException;
+import Exceptions.WrongBotCodeException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class LoginPageController implements Initializable{
@@ -37,10 +37,19 @@ public class LoginPageController implements Initializable{
     private Pane loginPane;
 
     @FXML
-    private Label labelBox;
+    private Label botCodeLabel;
 
     @FXML
-    private TextField codeBox;
+    private TextField botCodeField;
+
+    @FXML
+    private Button SignInButton;
+
+    @FXML
+    private CheckBox checkRobotBox;
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     public void onRegisterButtonClicked(){
@@ -63,8 +72,32 @@ public class LoginPageController implements Initializable{
    @FXML
    public void onImNotARobotClicked(){
        System.out.println("Checked");
-       labelBox.setVisible(true);
-       codeBox.setVisible(true);
+       checkRobotBox.setDisable(true);
+       botCodeLabel.setVisible(true);
+       botCodeField.setVisible(true);
+       Random rand = new Random();
+       int num = rand.nextInt(10000,100000);
+       botCodeLabel.setText(String.valueOf(num));
+   }
+
+   @FXML
+   public void onSignInButtonClicked() {
+        try{
+            if(botCodeField.getText().equals(botCodeLabel.getText())){
+                loginPane.setVisible(false);
+                errorLabel.setVisible(false);
+            }else if(botCodeField.getText().equals("")){
+                throw new EmptyBotCodeException();
+            }else{
+                throw new WrongBotCodeException();
+            }
+        }catch(EmptyBotCodeException e){
+            errorLabel.setText(e.getMessage());
+            errorLabel.setVisible(true);
+        }catch(WrongBotCodeException e){
+            errorLabel.setText(e.getMessage());
+            errorLabel.setVisible(true);
+        }
    }
 
     @Override
