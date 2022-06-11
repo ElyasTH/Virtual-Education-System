@@ -135,12 +135,14 @@ public class LoginPageController implements Initializable{
 
    @FXML
    public void onSignInButtonClicked() {
+        backButton.setVisible(false);
         User user;
         try{
             user = Database.getUser(loginIdField.getText());
             if(botCodeField.getText().equals("")){
                 throw new EmptyBotCodeException();
-            }else if (!botCodeField.getText().equals(botCodeLabel.getText())){
+            }
+            if (!botCodeField.getText().equals(botCodeLabel.getText())){
                 throw new WrongBotCodeException();
             }
             if (user != null){
@@ -151,10 +153,11 @@ public class LoginPageController implements Initializable{
             }
             loginPane.setVisible(false);
             errorLabel.setVisible(false);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e){
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }
+       backButton.setVisible(false);
    }
 
     @FXML
@@ -190,6 +193,9 @@ public class LoginPageController implements Initializable{
             if(! (phoneField.getText().length() == 11 && phoneField.getText().startsWith("09"))){
                 throw new InvalidPhoneNumberException();
             }
+            if(! (passwordField.getText().equals(passwordRepField.getText()))){
+                throw new WrongRepeatPasswordException();
+            }
             newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
                     emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), "test",
                     usernameField.getText(), passwordField.getText());
@@ -202,6 +208,7 @@ public class LoginPageController implements Initializable{
         if (newUser != null) {
             System.out.println("New user '" + newUser.getUsername() + "' registered.");
         }
+        backButton.setVisible(false);
     }
 
     @FXML
