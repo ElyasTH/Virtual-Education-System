@@ -122,6 +122,14 @@ public class LoginPageController implements Initializable{
    }
 
    @FXML
+   public void onBackButtonClicked(){
+        loginPane.setVisible(false);
+        registerPane.setVisible(false);
+        loginButton.setVisible(true);
+        registerButton.setVisible(true);
+   }
+
+   @FXML
    public void onSignInButtonClicked() {
         User user;
         try{
@@ -154,7 +162,7 @@ public class LoginPageController implements Initializable{
     @FXML
     public void onSignUpButtonClicked(){
         User newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
-                emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), profileImage.getImage().getUrl(),
+                emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), "test",
                 usernameField.getText(), passwordField.getText());
 
         try {
