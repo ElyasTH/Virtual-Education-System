@@ -1,8 +1,6 @@
 package com.example.educationsystem;
 
-import Exceptions.EmptyBotCodeException;
-import Exceptions.InvalidPasswordException;
-import Exceptions.WrongBotCodeException;
+import Exceptions.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -96,7 +94,11 @@ public class LoginPageController implements Initializable{
     private Label errorLabel;
 
     @FXML
+    private Button backButton;
+
+    @FXML
     public void onRegisterButtonClicked(){
+        backButton.setVisible(true);
         registerButton.setVisible(false);
         loginButton.setVisible(!loginButton.isVisible());
         registerPane.setVisible(true);
@@ -105,6 +107,7 @@ public class LoginPageController implements Initializable{
 
     @FXML
     public void onLoginButtonClicked(){
+        backButton.setVisible(true);
         loginButton.setVisible(false);
         registerButton.setVisible(!registerButton.isVisible());
         loginPane.setVisible(true);
@@ -127,6 +130,7 @@ public class LoginPageController implements Initializable{
         registerPane.setVisible(false);
         loginButton.setVisible(true);
         registerButton.setVisible(true);
+        backButton.setVisible(false);
    }
 
    @FXML
@@ -147,12 +151,6 @@ public class LoginPageController implements Initializable{
             }
             loginPane.setVisible(false);
             errorLabel.setVisible(false);
-        }catch(EmptyBotCodeException e){
-            errorLabel.setText(e.getMessage());
-            errorLabel.setVisible(true);
-        }catch(WrongBotCodeException e){
-            errorLabel.setText(e.getMessage());
-            errorLabel.setVisible(true);
         }catch (RuntimeException e){
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
@@ -160,19 +158,50 @@ public class LoginPageController implements Initializable{
    }
 
     @FXML
-    public void onSignUpButtonClicked(){
-        User newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
-                emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), "test",
-                usernameField.getText(), passwordField.getText());
+    public void onSignUpButtonClicked() {
+
+        errorLabel.setVisible(false);
+        User newUser = null;
 
         try {
+            String firstPart = "", secoundPart = "", thirdPart = "";
+            for (int i = 0; i < emailField.getText().indexOf("@"); i++) {
+                firstPart += emailField.getText().charAt(i);
+            }
+            for (int i = emailField.getText().indexOf("@") + 1; i < emailField.getText().lastIndexOf("."); i++) {
+                secoundPart += emailField.getText().charAt(i);
+            }
+            for (int i = emailField.getText().lastIndexOf(".") + 1; i < emailField.getText().length(); i++) {
+                thirdPart += emailField.getText().charAt(i);
+            }
+            if (!(firstPart.matches("[a-zA-Z0-9.]+") && firstPart.length() <= 15 &&
+                    secoundPart.matches("[a-z0-9.-]+") && secoundPart.length() <= 8 &&
+                    thirdPart.matches("[a-z]+") && thirdPart.length() <= 4)) {
+                throw new InvalidEmailException();
+            }
+            String value = (String) roleBox.getValue();
+            if (value == null || value.equals("")) {
+                throw new InvalidRoleException();
+            }
+            if (!IdField.getText().matches("[0-9]+") || (value.equals("Student") && IdField.getText().length() != 10) ||
+                    (value.equals("Teacher") && IdField.getText().length() != 6)){
+                throw new InvalidIdException();
+            }
+            if(! (phoneField.getText().length() == 11 && phoneField.getText().startsWith("09"))){
+                throw new InvalidPhoneNumberException();
+            }
+            newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
+                    emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), "test",
+                    usernameField.getText(), passwordField.getText());
             Database.check_user_info_existence(newUser.getId(), newUser.getUsername(), newUser.getEmail(), newUser.getPhone());
             Database.newUser(newUser);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }
-        System.out.println("New user '" + newUser.getUsername() + "' registered.");
+        if (newUser != null) {
+            System.out.println("New user '" + newUser.getUsername() + "' registered.");
+        }
     }
 
     @FXML
@@ -192,7 +221,7 @@ public class LoginPageController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<String> roleItems = FXCollections.observableArrayList("Student", "Teacher");
+        ObservableList<String> roleItems = FXCollections.observableArrayList("Student", "Teacher" , "");
         roleBox.setItems(roleItems);
     }
 }

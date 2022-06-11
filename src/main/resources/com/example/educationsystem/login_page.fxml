@@ -27,7 +27,7 @@
             <ComboBox fx:id="roleBox" layoutX="228.0" layoutY="212.0" prefWidth="150.0" promptText="Role" />
             
                   <Button fx:id="imageUploadButton" layoutX="400.0" layoutY="198.0" mnemonicParsing="false" onAction="#onUploadImageButtonClicked" prefHeight="47.0" prefWidth="106.0" text="Upload image" />
-            <ImageView fitHeight="134.0" fitWidth="143.0" layoutX="398.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profileImage" fitHeight="134.0" fitWidth="143.0" layoutX="398.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../avatar2.png" />
                </image>
@@ -55,6 +55,6 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <Button fx:id="backButton" layoutX="15.0" layoutY="16.0" minHeight="21.0" minWidth="53.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="31.0" prefWidth="53.0" text="Back" visible="false" />
+      <Button fx:id="backButton" layoutX="532.0" layoutY="9.0" minHeight="21.0" minWidth="53.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="31.0" prefWidth="53.0" text="Back" visible="false" />
    </children>
 </Pane>
