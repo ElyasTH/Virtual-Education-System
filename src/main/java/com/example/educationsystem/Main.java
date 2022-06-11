@@ -11,13 +11,13 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loginPage = new FXMLLoader(Main.class.getResource("login_page.fxml"));
-        Scene scene = new Scene(loginPage.load(), 700, 500);
+        Scene scene = new Scene(loginPage.load());
         stage.setTitle("Education System");
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
