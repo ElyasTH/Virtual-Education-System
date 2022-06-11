@@ -135,7 +135,6 @@ public class LoginPageController implements Initializable{
 
    @FXML
    public void onSignInButtonClicked() {
-        backButton.setVisible(false);
         User user;
         try{
             user = Database.getUser(loginIdField.getText());
@@ -153,11 +152,10 @@ public class LoginPageController implements Initializable{
             }
             loginPane.setVisible(false);
             errorLabel.setVisible(false);
-        } catch (RuntimeException e){
+        }catch (RuntimeException e){
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }
-       backButton.setVisible(false);
    }
 
     @FXML
@@ -167,6 +165,14 @@ public class LoginPageController implements Initializable{
         User newUser = null;
 
         try {
+            if (firstnameField.getText().length() > 15 || !firstnameField.getText().matches("[a-zA-Z]+")) throw new InvalidFirstnameException();
+            else if (lastnameField.getText().length() > 15 || !lastnameField.getText().matches("[a-zA-Z]+")) throw new InvalidLastnameException();
+            else if (majorField.getText().length() > 15 || !majorField.getText().matches("[a-zA-Z]+")) throw new InvalidMajorException();
+            else if (usernameField.getText().length() < 5 || usernameField.getText().length() > 12 ||
+                    !usernameField.getText().matches("[a-zA-Z0-9]+")) throw new InvalidUsernameException();
+            else if (passwordField.getText().length() < 8 || passwordField.getText().length() > 12 ||
+                    !passwordField.getText().matches("[a-zA-Z0-9]+")) throw new InvalidPasswordException();
+
             String firstPart = "", secoundPart = "", thirdPart = "";
             for (int i = 0; i < emailField.getText().indexOf("@"); i++) {
                 firstPart += emailField.getText().charAt(i);
@@ -208,7 +214,6 @@ public class LoginPageController implements Initializable{
         if (newUser != null) {
             System.out.println("New user '" + newUser.getUsername() + "' registered.");
         }
-        backButton.setVisible(false);
     }
 
     @FXML
