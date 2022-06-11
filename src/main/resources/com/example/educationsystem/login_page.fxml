@@ -37,20 +37,20 @@
       </Pane>
       <Pane fx:id="loginPane" layoutX="15.0" layoutY="19.0" prefHeight="374.0" prefWidth="562.0" visible="false">
          <children>
-            <TextField layoutX="214.0" layoutY="54.0" promptText="ID" />
-            <Button fx:id="signInButton" layoutX="271.0" layoutY="251.0" mnemonicParsing="false" onAction="#onSignInButtonClicked" prefHeight="38.0" prefWidth="74.0" text="Sign In" />
-            <Label fx:id="botCodeLabel" layoutX="251.0" layoutY="168.0" prefHeight="21.0" prefWidth="113.0" text="0" textAlignment="CENTER" textFill="#393737" visible="false">
+            <TextField fx:id="loginIdField" layoutX="214.0" layoutY="54.0" promptText="ID" />
+            <Button fx:id="signInButton" layoutX="253.0" layoutY="264.0" mnemonicParsing="false" onAction="#onSignInButtonClicked" prefHeight="38.0" prefWidth="74.0" text="Sign In" />
+            <Label fx:id="botCodeLabel" layoutX="251.0" layoutY="187.0" prefHeight="21.0" prefWidth="113.0" text="0" textAlignment="CENTER" textFill="#393737" visible="false">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <TextField fx:id="botCodeField" layoutX="228.0" layoutY="189.0" prefHeight="31.0" prefWidth="160.0" promptText="Enter the number" visible="false" />
-            <PasswordField layoutX="214.0" layoutY="106.0" promptText="Password" />
+            <TextField fx:id="botCodeField" layoutX="210.0" layoutY="222.0" prefHeight="31.0" prefWidth="160.0" promptText="Enter the number" visible="false" />
+            <PasswordField fx:id="loginPasswordField" layoutX="214.0" layoutY="106.0" promptText="Password" />
             <CheckBox fx:id="checkRobotBox" layoutX="232.0" layoutY="147.0" mnemonicParsing="false" onAction="#onImNotARobotClicked" prefHeight="21.0" prefWidth="150.0" text="I'm NOT a robot" />
          </children>
       </Pane>
       <Button fx:id="registerButton" layoutX="250.0" layoutY="135.0" mnemonicParsing="false" onAction="#onRegisterButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Register" />
       <Button fx:id="loginButton" layoutX="250.0" layoutY="218.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Login" />
-      <Label fx:id="errorLabel" layoutX="189.0" layoutY="14.0" prefHeight="21.0" prefWidth="276.0" textFill="#c91f1f" visible="false">
+      <Label fx:id="errorLabel" layoutX="9.0" layoutY="14.0" prefHeight="21.0" prefWidth="575.0" textFill="#c91f1f">
          <font>
             <Font size="12.0" />
          </font>
