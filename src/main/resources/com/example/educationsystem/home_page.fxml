@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.HomePageController">
    <children>
-      <Pane fx:id="homepagePane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="875.0">
+      <Pane fx:id="homepagePane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="875.0" visible="false">
          <children>
             <Label layoutX="666.0" layoutY="62.0" prefHeight="21.0" prefWidth="129.0" text="Label" />
             <Label layoutX="666.0" layoutY="31.0" prefHeight="21.0" prefWidth="129.0" text="Label" />
@@ -54,7 +53,7 @@
             <Label fx:id="usernameLabel" layoutX="14.0" layoutY="101.0" prefHeight="21.0" prefWidth="89.0" text="label" textAlignment="CENTER" />
          </children>
       </Pane>
-      <Pane fx:id="profilePane" layoutX="19.0" layoutY="16.0" prefHeight="561.0" prefWidth="858.0" visible="false">
+      <Pane fx:id="profilePane" layoutX="19.0" layoutY="16.0" prefHeight="561.0" prefWidth="858.0">
          <children>
             <TextField fx:id="firstnameField" disable="true" layoutX="134.0" layoutY="125.0" promptText="Firstname" />
             <TextField fx:id="lastnameField" disable="true" layoutX="466.0" layoutY="125.0" promptText="Lastname" />
@@ -64,7 +63,7 @@
             <TextField fx:id="phoneField" layoutX="466.0" layoutY="399.0" promptText="Phone" />
             <TextField fx:id="usernameField" disable="true" layoutX="134.0" layoutY="399.0" promptText="Username" />
             <PasswordField fx:id="passwordField" layoutX="134.0" layoutY="307.0" promptText="Password" />
-            <TextField disable="true" layoutX="299.0" layoutY="479.0" promptText="Role" />
+            <TextField fx:id="roleField" disable="true" layoutX="299.0" layoutY="479.0" promptText="Role" />
             <Label layoutX="382.0" layoutY="130.0" text="Lastname :" />
             <Label layoutX="46.0" layoutY="130.0" text="Firstname :" />
             <Label layoutX="352.0" layoutY="34.0" text="Your Profile" underline="true">
@@ -86,6 +85,9 @@
             <Label layoutX="45.0" layoutY="404.0" text="Username :" />
             <Label layoutX="409.0" layoutY="404.0" text="Phone :" />
             <Label layoutX="248.0" layoutY="484.0" text="Role :" />
+            <Button fx:id="backButton" layoutX="786.0" layoutY="18.0" mnemonicParsing="false" onAction="#onBackButtonClicked" text="Back" />
+            <Button fx:id="saveButton" disable="true" layoutX="765.0" layoutY="505.0" mnemonicParsing="false" onAction="#onSaveButtonClicked" prefHeight="31.0" prefWidth="74.0" text="Save" />
+            <Label fx:id="errorLabel" layoutX="7.0" layoutY="41.0" prefHeight="18.0" prefWidth="319.0" text="Label" />
          </children>
       </Pane>
    </children>

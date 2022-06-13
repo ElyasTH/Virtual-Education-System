@@ -1,5 +1,8 @@
 package com.example.educationsystem;
 
+import Exceptions.InvalidEmailException;
+import Exceptions.InvalidPasswordException;
+import Exceptions.InvalidPhoneNumberException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -63,6 +66,12 @@ public class HomePageController implements Initializable {
     private ImageView profileImage;
 
     @FXML
+    private Button saveButton;
+
+    @FXML
+    private Label errorLabel;
+
+    @FXML
     private Button profileButton;
 
     @FXML
@@ -84,7 +93,8 @@ public class HomePageController implements Initializable {
         usernameField.setText(user.getUsername());
         passwordField.setText(user.getPassword());
         roleField.setText(user.getRole());
-
+        File image = new File(user.getPicture());
+        profileImage.setImage(new Image(image.toURI().toString()));
     }
 
     @FXML
@@ -100,7 +110,40 @@ public class HomePageController implements Initializable {
 
     @FXML
     public void onSaveButtonClicked(){
-        
+        try{
+            if (passwordField.getText().length() < 8 || passwordField.getText().length() > 12 ||
+                    !passwordField.getText().matches("[a-zA-Z0-9]+")) throw new InvalidPasswordException();
+            String firstPart = "", secoundPart = "", thirdPart = "";
+            for (int i = 0; i < emailField.getText().indexOf("@"); i++) {
+                firstPart += emailField.getText().charAt(i);
+            }
+            for (int i = emailField.getText().indexOf("@") + 1; i < emailField.getText().lastIndexOf("."); i++) {
+                secoundPart += emailField.getText().charAt(i);
+            }
+            for (int i = emailField.getText().lastIndexOf(".") + 1; i < emailField.getText().length(); i++) {
+                thirdPart += emailField.getText().charAt(i);
+            }
+            if (!(firstPart.matches("[a-zA-Z0-9.]+") && firstPart.length() <= 15 &&
+                    secoundPart.matches("[a-z0-9.-]+") && secoundPart.length() <= 8 &&
+                    thirdPart.matches("[a-z]+") && thirdPart.length() <= 4)) {
+                throw new InvalidEmailException();
+            }
+            if(! (phoneField.getText().length() == 11 && phoneField.getText().startsWith("09"))){
+                throw new InvalidPhoneNumberException();
+            }
+            user.setPassword(passwordField.getText());
+            user.setEmail(emailField.getText());
+            user.setPhone(phoneField.getText());
+        }catch (RuntimeException e){
+            errorLabel.setText(e.getMessage());
+            errorLabel.setVisible(true);
+        }
+    }
+
+    @FXML
+    public void onBackButtonClicked(){
+        profilePane.setVisible(false);
+        homepagePane.setVisible(true);
     }
 
 
@@ -127,5 +170,14 @@ public class HomePageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usernameLabel.setText(user.getUsername());
+        passwordField.textProperty().addListener(((observableValue, s, t1) -> {
+            saveButton.setDisable(false);
+        }));
+        emailField.textProperty().addListener(((observableValue, s, t1) -> {
+            saveButton.setDisable(false);
+        }));
+        phoneField.textProperty().addListener(((observableValue, s, t1) -> {
+            saveButton.setDisable(false);
+        }));
     }
 }

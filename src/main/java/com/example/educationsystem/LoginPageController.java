@@ -154,8 +154,8 @@ public class LoginPageController implements Initializable{
                 else throw new InvalidPasswordException();
             }
             try {
-                Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("home_page.fxml")).load()));
                 HomePageController.setUser(user);
+                Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("home_page.fxml")).load()));
 
             }catch (IOException e){
                 e.printStackTrace();
