@@ -181,18 +181,18 @@ public class LoginPageController implements Initializable{
             else if (passwordField.getText().length() < 8 || passwordField.getText().length() > 12 ||
                     !passwordField.getText().matches("[a-zA-Z0-9]+")) throw new InvalidPasswordException();
 
-            String firstPart = "", secoundPart = "", thirdPart = "";
+            String firstPart = "", secondPart = "", thirdPart = "";
             for (int i = 0; i < emailField.getText().indexOf("@"); i++) {
                 firstPart += emailField.getText().charAt(i);
             }
             for (int i = emailField.getText().indexOf("@") + 1; i < emailField.getText().lastIndexOf("."); i++) {
-                secoundPart += emailField.getText().charAt(i);
+                secondPart += emailField.getText().charAt(i);
             }
             for (int i = emailField.getText().lastIndexOf(".") + 1; i < emailField.getText().length(); i++) {
                 thirdPart += emailField.getText().charAt(i);
             }
             if (!(firstPart.matches("[a-zA-Z0-9.]+") && firstPart.length() <= 15 &&
-                    secoundPart.matches("[a-z0-9.-]+") && secoundPart.length() <= 8 &&
+                    secondPart.matches("[a-z0-9.-]+") && secondPart.length() <= 8 &&
                     thirdPart.matches("[a-z]+") && thirdPart.length() <= 4)) {
                 throw new InvalidEmailException();
             }
@@ -211,8 +211,8 @@ public class LoginPageController implements Initializable{
                 throw new WrongRepeatPasswordException();
             }
             newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
-                    emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), "test",
-                    usernameField.getText(), passwordField.getText());
+                    emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), profileImage.getImage().getUrl().toString(),
+                    usernameField.getText(), passwordField.getText(), "");
             Database.check_user_info_existence(newUser.getId(), newUser.getUsername(), newUser.getEmail(), newUser.getPhone());
             Database.newUser(newUser);
         } catch (RuntimeException e) {
