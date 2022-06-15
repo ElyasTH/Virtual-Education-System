@@ -13,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
@@ -72,6 +73,15 @@ public class HomePageController implements Initializable {
     private Label errorLabel;
 
     @FXML
+    private ImageView homepageProfile;
+
+    @FXML
+    private Label updateLabel;
+
+    @FXML
+    private GridPane coursePane;
+
+    @FXML
     private Button profileButton;
 
     @FXML
@@ -113,18 +123,18 @@ public class HomePageController implements Initializable {
         try{
             if (passwordField.getText().length() < 8 || passwordField.getText().length() > 12 ||
                     !passwordField.getText().matches("[a-zA-Z0-9]+")) throw new InvalidPasswordException();
-            String firstPart = "", secoundPart = "", thirdPart = "";
+            String firstPart = "", secondPart = "", thirdPart = "";
             for (int i = 0; i < emailField.getText().indexOf("@"); i++) {
                 firstPart += emailField.getText().charAt(i);
             }
             for (int i = emailField.getText().indexOf("@") + 1; i < emailField.getText().lastIndexOf("."); i++) {
-                secoundPart += emailField.getText().charAt(i);
+                secondPart += emailField.getText().charAt(i);
             }
             for (int i = emailField.getText().lastIndexOf(".") + 1; i < emailField.getText().length(); i++) {
                 thirdPart += emailField.getText().charAt(i);
             }
             if (!(firstPart.matches("[a-zA-Z0-9.]+") && firstPart.length() <= 15 &&
-                    secoundPart.matches("[a-z0-9.-]+") && secoundPart.length() <= 8 &&
+                    secondPart.matches("[a-z0-9.-]+") && secondPart.length() <= 8 &&
                     thirdPart.matches("[a-z]+") && thirdPart.length() <= 4)) {
                 throw new InvalidEmailException();
             }
@@ -134,6 +144,10 @@ public class HomePageController implements Initializable {
             user.setPassword(passwordField.getText());
             user.setEmail(emailField.getText());
             user.setPhone(phoneField.getText());
+            user.setPicture(profileImage.getImage().getUrl().replace("file:/", ""));
+            Database.updateUser(user);
+            updateLabel.setVisible(true);
+            saveButton.setDisable(true);
         }catch (RuntimeException e){
             errorLabel.setText(e.getMessage());
             errorLabel.setVisible(true);
@@ -142,6 +156,8 @@ public class HomePageController implements Initializable {
 
     @FXML
     public void onBackButtonClicked(){
+        errorLabel.setVisible(false);
+        updateLabel.setVisible(false);
         profilePane.setVisible(false);
         homepagePane.setVisible(true);
     }
@@ -149,6 +165,7 @@ public class HomePageController implements Initializable {
 
     @FXML
     public void onUploadImageButtonClicked(){
+        saveButton.setDisable(false);
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Profile Image");
 
@@ -169,6 +186,7 @@ public class HomePageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        saveButton.setDisable(true);
         usernameLabel.setText(user.getUsername());
         passwordField.textProperty().addListener(((observableValue, s, t1) -> {
             saveButton.setDisable(false);
@@ -179,5 +197,16 @@ public class HomePageController implements Initializable {
         phoneField.textProperty().addListener(((observableValue, s, t1) -> {
             saveButton.setDisable(false);
         }));
+        File image = new File(user.getPicture());
+        homepageProfile.setImage(new Image(image.toURI().toString()));
+
+        for (int i = 0, lessonNumber = 0; i < 10; i++){
+            for (int j = 0; j < 4; j++){
+                if (lessonNumber < user.getLessons().size()) {
+                    coursePane.add(new Button(user.getLessons().get(lessonNumber)), j, i);
+                    lessonNumber++;
+                }
+            }
+        }
     }
 }

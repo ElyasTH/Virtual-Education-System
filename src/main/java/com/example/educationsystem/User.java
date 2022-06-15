@@ -70,18 +70,6 @@ public class User {
         return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public ArrayList<String> getLessons() {
         return lessons;
     }
@@ -101,5 +89,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }
