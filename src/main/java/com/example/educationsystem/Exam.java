@@ -12,13 +12,17 @@ public class Exam {
     private static int examCount = 1000;
     private ArrayList<Question> questions = new ArrayList<>();
 
-    public Exam(String title, int lessonId, LocalDate startDate, LocalDate endDate, ArrayList<Question> questions) {
+    public Exam(String title, int lessonId,int examId, LocalDate startDate, LocalDate endDate, ArrayList<Question> questions) {
         this.title = title;
         this.lessonId = lessonId;
-        this.examId = examCount;
+        if (examId == 0){
+            this.examId = examCount;
+            examCount++;
+        }else{
+            this.examId = examId;
+        }
         this.startDate = startDate;
         this.endDate = endDate;
         this.questions = questions;
-        examCount++;
     }
 }

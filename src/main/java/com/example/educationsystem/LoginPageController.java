@@ -10,10 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -85,6 +82,9 @@ public class LoginPageController implements Initializable{
     private Label botCodeLabel;
 
     @FXML
+    private Label registerMessageLabel;
+
+    @FXML
     private TextField botCodeField;
 
     @FXML
@@ -134,6 +134,7 @@ public class LoginPageController implements Initializable{
         loginButton.setVisible(true);
         registerButton.setVisible(true);
         backButton.setVisible(false);
+        errorLabel.setVisible(false);
    }
 
    @FXML
@@ -173,9 +174,9 @@ public class LoginPageController implements Initializable{
         User newUser = null;
 
         try {
-            if (firstnameField.getText().length() > 15 || !firstnameField.getText().matches("[a-zA-Z]+")) throw new InvalidFirstnameException();
-            else if (lastnameField.getText().length() > 15 || !lastnameField.getText().matches("[a-zA-Z]+")) throw new InvalidLastnameException();
-            else if (majorField.getText().length() > 15 || !majorField.getText().matches("[a-zA-Z]+")) throw new InvalidMajorException();
+            if (firstnameField.getText().length() > 15 || !firstnameField.getText().matches("[a-zA-Z ]+")) throw new InvalidFirstnameException();
+            else if (lastnameField.getText().length() > 15 || !lastnameField.getText().matches("[a-zA-Z ]+")) throw new InvalidLastnameException();
+            else if (majorField.getText().length() > 15 || !majorField.getText().matches("[a-zA-Z ]+")) throw new InvalidMajorException();
             else if (usernameField.getText().length() < 5 || usernameField.getText().length() > 12 ||
                     !usernameField.getText().matches("[a-zA-Z0-9]+")) throw new InvalidUsernameException();
             else if (passwordField.getText().length() < 8 || passwordField.getText().length() > 12 ||
@@ -215,13 +216,14 @@ public class LoginPageController implements Initializable{
                     usernameField.getText(), passwordField.getText(), "");
             Database.check_user_info_existence(newUser.getId(), newUser.getUsername(), newUser.getEmail(), newUser.getPhone());
             Database.newUser(newUser);
+            registerMessageLabel.setText("New user '" + newUser.getUsername() + "' registered." );
+            registerMessageLabel.setVisible(true);
+
         } catch (RuntimeException e) {
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }
-        if (newUser != null) {
-            System.out.println("New user '" + newUser.getUsername() + "' registered.");
-        }
+
     }
 
     @FXML

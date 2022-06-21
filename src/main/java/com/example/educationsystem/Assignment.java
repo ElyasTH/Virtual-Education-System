@@ -10,15 +10,13 @@ public class Assignment {
     private int id;
     private LocalDate startDate;
     private LocalDate endDate;
-    private File answer;
 
-    public Assignment(String title, String description, int lessonId, int id, LocalDate startDate, LocalDate endDate, File answer) {
+    public Assignment(String title, String description, int lessonId, int id, LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.description = description;
         this.lessonId = lessonId;
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.answer = answer;
     }
 }

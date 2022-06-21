@@ -162,6 +162,20 @@ public class HomePageController implements Initializable {
         homepagePane.setVisible(true);
     }
 
+    @FXML
+    public void onLessonButtonClicked(){
+        try {
+
+            CoursePageController.setUser(user);
+            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("course_page.fxml")).load()));
+
+
+        }catch (IOException e ){
+            e.printStackTrace();
+        }
+
+    }
+
 
     @FXML
     public void onUploadImageButtonClicked(){
@@ -203,7 +217,9 @@ public class HomePageController implements Initializable {
         for (int i = 0, lessonNumber = 0; i < 10; i++){
             for (int j = 0; j < 4; j++){
                 if (lessonNumber < user.getLessons().size()) {
-                    coursePane.add(new Button(user.getLessons().get(lessonNumber)), j, i);
+                    Button lessonButton = new Button(user.getLessons().get(lessonNumber));
+                    lessonButton.setOnAction(e -> onLessonButtonClicked());
+                    coursePane.add(lessonButton, j, i);
                     lessonNumber++;
                 }
             }

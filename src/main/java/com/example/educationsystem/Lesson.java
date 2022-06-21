@@ -17,7 +17,12 @@ public class Lesson {
     public Lesson(String name, int lessonId, User teacher, int capacity, ArrayList<User> students, ArrayList<Assignment> assignments,
                   ArrayList<Content> content, ArrayList<Exam> exams, ArrayList<Notice> notices) {
         this.name = name;
-        this.lessonId = lessonCount;
+        if (lessonId == 0 ){
+            this.lessonId = lessonCount;
+            lessonCount++;
+        }else{
+            this.lessonId = lessonId;
+        }
         this.teacher = teacher;
         this.capacity = capacity;
         this.students = students;

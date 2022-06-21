@@ -8,10 +8,15 @@ public abstract class Question {
     private double score;
     private static int questionCount = 10000;
 
-    public Question(int lessonId, int examId, double score, String question) {
+    public Question(int lessonId, int examId, int questionId, double score, String question) {
         this.lessonId = lessonId;
         this.examId = examId;
-        this.questionId = questionCount;
+        if (questionId == 0){
+            this.questionId = questionCount;
+            questionCount++;
+        }else{
+            this.questionId = questionId;
+        }
         this.score = score;
         this.question = question;
         questionCount++;

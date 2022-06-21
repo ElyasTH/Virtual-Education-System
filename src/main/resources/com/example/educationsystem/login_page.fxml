@@ -11,50 +11,59 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.LoginPageController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.LoginPageController">
    <children>
-      <Pane fx:id="registerPane" layoutX="15.0" layoutY="19.0" prefHeight="342.0" prefWidth="562.0" visible="false">
+      <Pane fx:id="registerPane" layoutX="9.0" layoutY="7.0" prefHeight="530.0" prefWidth="770.0" visible="false">
          <children>
-            <TextField fx:id="firstnameField" layoutX="33.0" layoutY="30.0" promptText="Firstname" />
-            <TextField fx:id="lastnameField" layoutX="224.0" layoutY="30.0" promptText="Lastname" />
-            <TextField fx:id="majorField" layoutX="224.0" layoutY="84.0" promptText="Major" />
-            <TextField fx:id="IdField" layoutX="33.0" layoutY="84.0" promptText="ID" />
-            <TextField fx:id="emailField" layoutX="33.0" layoutY="145.0" promptText="Email" />
-            <TextField fx:id="phoneField" layoutX="224.0" layoutY="145.0" promptText="Phone" />
-            <TextField fx:id="usernameField" layoutX="33.0" layoutY="208.0" promptText="Username" />
-            <PasswordField fx:id="passwordRepField" layoutX="224.0" layoutY="267.0" promptText="Repeat password" />
-            <PasswordField fx:id="passwordField" layoutX="33.0" layoutY="267.0" promptText="Password" />
-            <ComboBox fx:id="roleBox" layoutX="228.0" layoutY="212.0" prefWidth="150.0" promptText="Role" />
+            <TextField fx:id="firstnameField" layoutX="33.0" layoutY="93.0" promptText="Firstname" />
+            <TextField fx:id="lastnameField" layoutX="347.0" layoutY="93.0" promptText="Lastname" />
+            <TextField fx:id="majorField" layoutX="347.0" layoutY="162.0" promptText="Major" />
+            <TextField fx:id="IdField" layoutX="33.0" layoutY="162.0" promptText="ID" />
+            <TextField fx:id="emailField" layoutX="34.0" layoutY="228.0" promptText="Email" />
+            <TextField fx:id="phoneField" layoutX="347.0" layoutY="229.0" promptText="Phone" />
+            <TextField fx:id="usernameField" layoutX="33.0" layoutY="298.0" promptText="Username" />
+            <PasswordField fx:id="passwordRepField" layoutX="347.0" layoutY="366.0" promptText="Repeat password" />
+            <PasswordField fx:id="passwordField" layoutX="33.0" layoutY="366.0" promptText="Password" />
+            <ComboBox fx:id="roleBox" layoutX="347.0" layoutY="299.0" prefWidth="150.0" promptText="Role" />
             
-                  <Button fx:id="imageUploadButton" layoutX="400.0" layoutY="198.0" mnemonicParsing="false" onAction="#onUploadImageButtonClicked" prefHeight="47.0" prefWidth="106.0" text="Upload image" />
-            <ImageView fx:id="profileImage" fitHeight="134.0" fitWidth="143.0" layoutX="398.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+                  <Button fx:id="imageUploadButton" layoutX="595.0" layoutY="244.0" mnemonicParsing="false" onAction="#onUploadImageButtonClicked" prefHeight="47.0" prefWidth="120.0" text="Upload image" />
+            <ImageView fx:id="profileImage" fitHeight="134.0" fitWidth="143.0" layoutX="600.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../avatar2.png" />
                </image>
             </ImageView>
-            <Button fx:id="signUpButton" layoutX="247.0" layoutY="309.0" mnemonicParsing="false" onAction="#onSignUpButtonClicked" prefHeight="38.0" prefWidth="86.0" text="Sign Up" />
+            <Button fx:id="signUpButton" layoutX="359.0" layoutY="464.0" mnemonicParsing="false" onAction="#onSignUpButtonClicked" prefHeight="38.0" prefWidth="86.0" text="Sign Up" />
+            <Label layoutX="33.0" layoutY="130.0" prefHeight="18.0" prefWidth="180.0" text="15 characters maximum" textFill="#140075" />
+            <Label layoutX="347.0" layoutY="130.0" text="15 characters maximum" textFill="#140075" />
+            <Label layoutX="32.0" layoutY="195.0" text="0-9" textFill="#140075" />
+            <Label layoutX="347.0" layoutY="195.0" prefHeight="21.0" prefWidth="178.0" text="15 characters maximum" textFill="#140075" />
+            <Label layoutX="33.0" layoutY="407.0" prefHeight="21.0" prefWidth="180.0" text="8 characters minimum" textFill="#140075" />
+            <Label layoutX="347.0" layoutY="265.0" text="begins with 09" textFill="#140075" />
+            <Label layoutX="32.0" layoutY="265.0" text="15 characters maximum" textFill="#140075" />
+            <Label layoutX="33.0" layoutY="337.0" prefHeight="21.0" prefWidth="178.0" text="5 characters minimum" textFill="#140075" />
+            <Label fx:id="registerMessageLabel" layoutX="37.0" layoutY="483.0" prefHeight="21.0" prefWidth="250.0" visible="false" />
          </children>
       </Pane>
-      <Pane fx:id="loginPane" layoutX="15.0" layoutY="19.0" prefHeight="374.0" prefWidth="562.0" visible="false">
+      <Pane fx:id="loginPane" layoutX="9.0" layoutY="5.0" prefHeight="520.0" prefWidth="770.0" visible="false">
          <children>
-            <TextField fx:id="loginIdField" layoutX="214.0" layoutY="54.0" promptText="ID" />
-            <Button fx:id="signInButton" layoutX="253.0" layoutY="264.0" mnemonicParsing="false" onAction="#onSignInButtonClicked" prefHeight="38.0" prefWidth="74.0" text="Sign In" />
-            <Label fx:id="botCodeLabel" layoutX="251.0" layoutY="187.0" prefHeight="21.0" prefWidth="113.0" text="0" textAlignment="CENTER" textFill="#393737" visible="false">
+            <TextField fx:id="loginIdField" layoutX="317.0" layoutY="133.0" promptText="ID" />
+            <Button fx:id="signInButton" layoutX="360.0" layoutY="361.0" mnemonicParsing="false" onAction="#onSignInButtonClicked" prefHeight="38.0" prefWidth="74.0" text="Sign In" />
+            <Label fx:id="botCodeLabel" layoutX="360.0" layoutY="287.0" prefHeight="31.0" prefWidth="113.0" text="0" textAlignment="CENTER" textFill="#393737" visible="false">
                <font>
-                  <Font size="14.0" />
+                  <Font size="18.0" />
                </font></Label>
-            <TextField fx:id="botCodeField" layoutX="210.0" layoutY="222.0" prefHeight="31.0" prefWidth="160.0" promptText="Enter the number" visible="false" />
-            <PasswordField fx:id="loginPasswordField" layoutX="214.0" layoutY="106.0" promptText="Password" />
-            <CheckBox fx:id="checkRobotBox" layoutX="232.0" layoutY="147.0" mnemonicParsing="false" onAction="#onImNotARobotClicked" prefHeight="21.0" prefWidth="150.0" text="I'm NOT a robot" />
+            <TextField fx:id="botCodeField" layoutX="317.0" layoutY="318.0" prefHeight="31.0" prefWidth="160.0" promptText="Enter the number" visible="false" />
+            <PasswordField fx:id="loginPasswordField" layoutX="317.0" layoutY="206.0" promptText="Password" />
+            <CheckBox fx:id="checkRobotBox" layoutX="331.0" layoutY="266.0" mnemonicParsing="false" onAction="#onImNotARobotClicked" prefHeight="21.0" prefWidth="150.0" text="I'm NOT a robot" />
          </children>
       </Pane>
-      <Button fx:id="registerButton" layoutX="250.0" layoutY="135.0" mnemonicParsing="false" onAction="#onRegisterButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Register" />
-      <Button fx:id="loginButton" layoutX="250.0" layoutY="218.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Login" />
-      <Label fx:id="errorLabel" layoutX="9.0" layoutY="14.0" prefHeight="21.0" prefWidth="575.0" textFill="#c91f1f">
+      <Button fx:id="registerButton" layoutX="345.0" layoutY="202.0" mnemonicParsing="false" onAction="#onRegisterButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Register" />
+      <Button fx:id="loginButton" layoutX="345.0" layoutY="287.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="47.0" prefWidth="99.0" text="Login" />
+      <Label fx:id="errorLabel" layoutX="12.0" layoutY="14.0" prefHeight="21.0" prefWidth="575.0" textFill="#c91f1f">
          <font>
             <Font size="12.0" />
          </font>
       </Label>
-      <Button fx:id="backButton" layoutX="532.0" layoutY="9.0" minHeight="21.0" minWidth="53.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="31.0" prefWidth="53.0" text="Back" visible="false" />
+      <Button fx:id="backButton" layoutX="726.0" layoutY="9.0" minHeight="21.0" minWidth="53.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="31.0" prefWidth="53.0" text="Back" visible="false" />
    </children>
 </Pane>
