@@ -163,13 +163,10 @@ public class HomePageController implements Initializable {
     }
 
     @FXML
-    public void onLessonButtonClicked(){
+    public void onLessonsButtonClicked(){
         try {
-
             CoursePageController.setUser(user);
             Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("course_page.fxml")).load()));
-
-
         }catch (IOException e ){
             e.printStackTrace();
         }
@@ -218,7 +215,7 @@ public class HomePageController implements Initializable {
             for (int j = 0; j < 4; j++){
                 if (lessonNumber < user.getLessons().size()) {
                     Button lessonButton = new Button(user.getLessons().get(lessonNumber));
-                    lessonButton.setOnAction(e -> onLessonButtonClicked());
+                    lessonButton.setOnAction(e -> onLessonsButtonClicked());
                     coursePane.add(lessonButton, j, i);
                     lessonNumber++;
                 }

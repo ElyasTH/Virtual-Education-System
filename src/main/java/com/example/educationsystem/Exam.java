@@ -25,4 +25,8 @@ public class Exam {
         this.endDate = endDate;
         this.questions = questions;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }

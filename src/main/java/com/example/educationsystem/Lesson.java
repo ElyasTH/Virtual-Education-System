@@ -32,4 +32,24 @@ public class Lesson {
         this.notices = notices;
         lessonCount++;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public ArrayList<Content> getContent() {
+        return content;
+    }
+
+    public ArrayList<Exam> getExams() {
+        return exams;
+    }
+
+    public ArrayList<Notice> getNotices() {
+        return notices;
+    }
 }

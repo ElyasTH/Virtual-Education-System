@@ -10,13 +10,23 @@ public class Assignment {
     private int id;
     private LocalDate startDate;
     private LocalDate endDate;
+    private static int idCount = 1000;
 
     public Assignment(String title, String description, int lessonId, int id, LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.description = description;
         this.lessonId = lessonId;
-        this.id = id;
+        if(id == 0){
+            this.id = idCount;
+            idCount++;
+        }else{
+            this.id = id;
+        }
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
