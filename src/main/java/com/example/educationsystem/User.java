@@ -14,9 +14,10 @@ public class User {
     private String picture;
     private String username;
     private String password;
-    private ArrayList<String> lessons = new ArrayList<>();
+    private ArrayList<Lesson> lessons = new ArrayList<>();
 
-    public User(String firstname, String lastname, String major, String id, String email, String phone, String role, String picture, String username, String password, String lessons) {
+    public User(String firstname, String lastname, String major, String id, String email, String phone, String role, String picture,
+                String username, String password, String lessonIds, boolean getLessons) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.major = major;
@@ -27,7 +28,11 @@ public class User {
         this.picture = picture;
         this.username = username;
         this.password = password;
-        this.lessons = new ArrayList<String>(Arrays.asList(lessons.split(",")));
+        if (lessonIds != null && getLessons) {
+            for (String lessonId : lessonIds.split(",")) {
+                this.lessons.add(Database.getLesson(Integer.parseInt(lessonId)));
+            }
+        }
     }
 
     public String getFirstname() {
@@ -70,12 +75,12 @@ public class User {
         return password;
     }
 
-    public ArrayList<String> getLessons() {
+    public ArrayList<Lesson> getLessons() {
         return lessons;
     }
 
-    public void addLesson(String lessonName){
-        lessons.add(lessonName);
+    public void addLesson(Lesson lesson){
+        lessons.add(lesson);
         Database.updateUser(this);
     }
 

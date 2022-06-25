@@ -22,4 +22,16 @@ public class Notice {
     public String getTitle() {
         return title;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getLessonId() {
+        return lessonId;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

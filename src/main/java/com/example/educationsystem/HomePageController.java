@@ -20,7 +20,6 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.temporal.Temporal;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable {
@@ -115,7 +114,6 @@ public class HomePageController implements Initializable {
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -163,16 +161,15 @@ public class HomePageController implements Initializable {
     }
 
     @FXML
-    public void onLessonsButtonClicked(){
+    public void onLessonButtonClicked(Lesson lesson){
         try {
             CoursePageController.setUser(user);
+            CoursePageController.setLesson(lesson);
             Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("course_page.fxml")).load()));
         }catch (IOException e ){
             e.printStackTrace();
         }
-
     }
-
 
     @FXML
     public void onUploadImageButtonClicked(){
@@ -194,7 +191,6 @@ public class HomePageController implements Initializable {
         HomePageController.user = user;
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         saveButton.setDisable(true);
@@ -214,8 +210,9 @@ public class HomePageController implements Initializable {
         for (int i = 0, lessonNumber = 0; i < 10; i++){
             for (int j = 0; j < 4; j++){
                 if (lessonNumber < user.getLessons().size()) {
-                    Button lessonButton = new Button(user.getLessons().get(lessonNumber));
-                    lessonButton.setOnAction(e -> onLessonsButtonClicked());
+                    Button lessonButton = new Button(user.getLessons().get(lessonNumber).getTitle());
+                    final int lessonId = user.getLessons().get(lessonNumber).getLessonId();
+                    lessonButton.setOnAction(e -> onLessonButtonClicked(Database.getLesson(lessonId)));
                     coursePane.add(lessonButton, j, i);
                     lessonNumber++;
                 }

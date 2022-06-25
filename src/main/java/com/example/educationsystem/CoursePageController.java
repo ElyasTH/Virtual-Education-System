@@ -39,7 +39,7 @@ public class CoursePageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lessonNameLabel.setText("Lesson : " + lesson.getName());
+        lessonNameLabel.setText("Lesson : " + lesson.getTitle());
         for(int i = 0 , noticeNumber = 0 ; i <= 20 ; i++){
             if(noticeNumber < lesson.getNotices().size()){
                 Button noticeButton = new Button(lesson.getNotices().get(noticeNumber).getTitle());

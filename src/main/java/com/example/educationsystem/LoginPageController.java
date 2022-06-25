@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -141,7 +142,7 @@ public class LoginPageController implements Initializable{
    public void onSignInButtonClicked() {
         User user;
         try{
-            user = Database.getUser(loginIdField.getText());
+            user = Database.getUser(loginIdField.getText(), true);
             if(botCodeField.getText().equals("")){
                 throw new EmptyBotCodeException();
             }
@@ -157,7 +158,6 @@ public class LoginPageController implements Initializable{
             try {
                 HomePageController.setUser(user);
                 Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("home_page.fxml")).load()));
-
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -212,8 +212,8 @@ public class LoginPageController implements Initializable{
                 throw new WrongRepeatPasswordException();
             }
             newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
-                    emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), profileImage.getImage().getUrl().toString(),
-                    usernameField.getText(), passwordField.getText(), "");
+                    emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), profileImage.getImage().getUrl(),
+                    usernameField.getText(), passwordField.getText(), null, false);
             Database.check_user_info_existence(newUser.getId(), newUser.getUsername(), newUser.getEmail(), newUser.getPhone());
             Database.newUser(newUser);
             registerMessageLabel.setText("New user '" + newUser.getUsername() + "' registered." );
