@@ -1,7 +1,6 @@
 package com.example.educationsystem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class User {
     private String firstname;

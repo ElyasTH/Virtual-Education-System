@@ -162,6 +162,7 @@ public class LoginPageController implements Initializable{
                 e.printStackTrace();
             }
         }catch (RuntimeException e){
+            e.printStackTrace();
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }

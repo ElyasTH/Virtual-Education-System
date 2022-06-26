@@ -1,13 +1,15 @@
 package com.example.educationsystem;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Lesson {
     private String title;
     private int lessonId;
     private User teacher;
     private int capacity;
-    private ArrayList<User> students =new ArrayList<>();
+    private ArrayList<String> studentIds =new ArrayList<>();
     private ArrayList<Assignment> assignments = new ArrayList<>();
     private ArrayList<Content> content = new ArrayList<>();
     private ArrayList<Exam> exams = new ArrayList<>();
@@ -16,10 +18,13 @@ public class Lesson {
 
     public Lesson(String name, int lessonId, String teacherId, int capacity, String studentIds, String assignmentIds,
                   String contentIds, String examIds, String noticeIds) {
+
         this.title = name;
         if (lessonId == 0) {
+            lessonCount = Database.getLastId("lessons");
+            if (lessonCount == 0) lessonCount = 100;
+            else lessonCount++;
             this.lessonId = lessonCount;
-            lessonCount++;
         }
         else this.lessonId = lessonId;
         this.teacher = Database.getUser(teacherId, true);
@@ -32,11 +37,7 @@ public class Lesson {
     }
 
     public void setStudents(String studentIds) {
-        String[] ids = studentIds.split(",");
-
-        for (String id : ids) {
-            this.students.add(Database.getUser(id, false));
-        }
+        this.studentIds.addAll(Arrays.asList(studentIds.split(",")));
     }
 
     public void setAssignments(String assignmentIds) {
@@ -87,8 +88,8 @@ public class Lesson {
         return capacity;
     }
 
-    public ArrayList<User> getStudents() {
-        return students;
+    public ArrayList<String> getStudentIds() {
+        return studentIds;
     }
 
     public ArrayList<Assignment> getAssignments() {

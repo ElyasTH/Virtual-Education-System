@@ -49,7 +49,6 @@ public class Database {
     }
 
     public static void updateUser(User user){
-
         String firstNameQuery = "update users set email = ?, password = ?, phone = ?, picture = ?, lessons = ? where id = ?";
 
         Connection conn = get_connection();
@@ -324,9 +323,9 @@ public class Database {
         Connection conn = get_connection();
 
         StringBuilder studentIds = new StringBuilder("");
-        for (User student: lesson.getStudents()){
-            studentIds.append(student.getId()).append(",");
-            student.addLesson(lesson);
+        for (String studentId: lesson.getStudentIds()){
+            studentIds.append(studentId).append(",");
+            Database.getUser(studentId, true).addLesson(lesson);
         }
         try{
             PreparedStatement preparedStmt = conn.prepareStatement(sql);
@@ -428,6 +427,30 @@ public class Database {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static int getLastId(String tableName){
+        String query = "SELECT MAX(id) FROM " + tableName;
+
+        Connection conn = get_connection();
+        try {
+            if (conn == null) return -1;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally {
+            try{
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return -1;
     }
 }
 
