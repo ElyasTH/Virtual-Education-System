@@ -225,7 +225,7 @@ public class Database {
     }
 
     public static Notice getNotice(int noticeId){
-        final String query = "SELECT name, description, id, lessonId" +
+        final String query = "SELECT name, description, id, lessonId FROM notices " +
                 "WHERE id=" + noticeId;
 
         Connection conn = get_connection();

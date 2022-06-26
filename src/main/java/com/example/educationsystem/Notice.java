@@ -11,12 +11,13 @@ public class Notice {
         this.title = title;
         this.description = description;
         this.lessonId = lessonId;
-        if (id == 0){
+        if (id == 0) {
+            idCount = Database.getLastId("notices");
+            if (idCount == 0) idCount = 1000;
+            else idCount++;
             this.id = idCount;
-            idCount++;
-        }else{
-            this.id =id;
         }
+        else this.id = id;
     }
 
     public String getTitle() {

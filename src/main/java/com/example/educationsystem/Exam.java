@@ -15,12 +15,13 @@ public class Exam {
     public Exam(String title, int lessonId,int examId, LocalDate startDate, LocalDate endDate, ArrayList<Question> questions) {
         this.title = title;
         this.lessonId = lessonId;
-        if (examId == 0){
+        if (lessonId == 0) {
+            examCount = Database.getLastId("exams");
+            if (examCount == 0) examCount = 1000;
+            else examCount++;
             this.examId = examCount;
-            examCount++;
-        }else{
-            this.examId = examId;
         }
+        else this.examId = examId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.questions = questions;
@@ -28,5 +29,9 @@ public class Exam {
 
     public String getTitle() {
         return title;
+    }
+
+    public int getExamId() {
+        return examId;
     }
 }

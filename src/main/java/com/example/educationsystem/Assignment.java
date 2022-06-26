@@ -17,12 +17,13 @@ public class Assignment {
         this.description = description;
         this.file = file;
         this.lessonId = lessonId;
-        if(id == 0){
-            this.id = idCount;
-            idCount++;
-        }else{
-            this.id = id;
+        if (id == 0) {
+            idCount = Database.getLastId("assignments");
+            if (idCount == 0) idCount = 1000;
+            else idCount++;
+            this.lessonId = idCount;
         }
+        else this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
     }
