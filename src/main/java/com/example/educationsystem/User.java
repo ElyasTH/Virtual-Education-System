@@ -83,6 +83,11 @@ public class User {
         Database.updateUser(this);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return this.id.equals(((User) obj).getId());
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

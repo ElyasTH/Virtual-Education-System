@@ -172,7 +172,7 @@ public class Database {
     }
 
     public static Assignment getAssignment(int assignmentId){
-        final String query = "SELECT name, description, id, lessonId, file, startTime, endTime" +
+        final String query = "SELECT name, description, id, lessonId, file, startTime, endTime FROM assignments " +
                 "WHERE id=" + assignmentId;
 
         Connection conn = get_connection();
@@ -199,7 +199,7 @@ public class Database {
     }
 
     public static Content getContent(int contentId){
-        final String query = "SELECT name, description, id, lessonId, file" +
+        final String query = "SELECT name, description, id, lessonId, file FROM content " +
                 "WHERE id=" + contentId;
 
         Connection conn = get_connection();
@@ -250,7 +250,7 @@ public class Database {
     }
 
     public static Exam getExam(int examId){
-        final String query = "SELECT name, id, lessonId, startTime, endTime, questionIds" +
+        final String query = "SELECT name, id, lessonId, startTime, endTime, questionIds FROM exams " +
                 "WHERE id=" + examId;
         ArrayList<Question> questions = new ArrayList<>();
 
@@ -283,7 +283,7 @@ public class Database {
     }
 
     public static Question getQuestion(int questionId){
-        final String query = "SELECT lessonId, examId, id, question, score, type, options, correctOption, correctAnswer" +
+        final String query = "SELECT lessonId, examId, id, question, score, type, options, correctOption, correctAnswer FROM questions " +
                 "WHERE id=" + questionId;
 
         Connection conn = get_connection();

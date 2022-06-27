@@ -67,6 +67,12 @@ public class CoursePageController implements Initializable {
                 noticeButton.setOnAction(e -> onContentButtonClicked(ContentType.Notice, lesson.getNotices().get(noticeNum).getId()));
                 noticePane.add(noticeButton , 0 , i);
                 noticeNumber++;
+            }else{
+                if(user.getRole().equals("Teacher")){
+                    Button addButton = new Button("Add new notice");
+                    noticePane.add(addButton , 0 , i++);
+                }
+                break;
             }
         }
         for(int i = 0 , contentNumber = 0 ; i <= 20 ; i++){
@@ -76,6 +82,12 @@ public class CoursePageController implements Initializable {
                 contentButton.setOnAction(e -> onContentButtonClicked(ContentType.Content, lesson.getContent().get(contentNum).getId()));
                 contentPane.add(contentButton , 0 , i);
                 contentNumber++;
+            }else{
+                if(user.getRole().equals("Teacher")){
+                    Button addButton = new Button("Add new content");
+                    contentPane.add(addButton , 0 , i++);
+                }
+                break;
             }
         }
         for(int i = 0 , assignmentNumber = 0; i <= 20 ; i++){
@@ -85,6 +97,12 @@ public class CoursePageController implements Initializable {
                 assignmentButton.setOnAction(e -> onContentButtonClicked(ContentType.Assignment, lesson.getAssignments().get(assignmentNum).getId()));
                 assignmentPane.add(assignmentButton , 0 , i);
                 assignmentNumber++;
+            }else{
+                if(user.getRole().equals("Teacher")){
+                    Button addButton = new Button("Add new assignment");
+                    assignmentPane.add(addButton , 0 , i++);
+                }
+                break;
             }
         }
         for(int i = 0 , examNumber = 0; i <= 20 ; i++){
@@ -94,6 +112,12 @@ public class CoursePageController implements Initializable {
                 examButton.setOnAction(e -> onContentButtonClicked(ContentType.Exam,lesson.getExams().get(examNum).getExamId()));
                 examPane.add(examButton , 0 , i);
                 examNumber++;
+            }else{
+                if(user.getRole().equals("Teacher")){
+                    Button addButton = new Button("Add new exam");
+                    examPane.add(addButton , 0 , i++);
+                }
+                break;
             }
         }
     }

@@ -46,6 +46,8 @@ public class CourseContentPageController implements Initializable {
     @FXML
     private Button assignmentFileButton;
 
+
+
     public static void setLesson(Lesson lesson) {
         CourseContentPageController.lesson = lesson;
     }

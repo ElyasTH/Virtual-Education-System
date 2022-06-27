@@ -3,14 +3,15 @@ package com.example.educationsystem;
 import Exceptions.InvalidEmailException;
 import Exceptions.InvalidPasswordException;
 import Exceptions.InvalidPhoneNumberException;
+import Exceptions.StudentAlreadyExistsException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -88,6 +89,32 @@ public class HomePageController implements Initializable {
 
     @FXML
     private Button exitButton;
+
+    @FXML
+    private Button addNewCourseButton;
+
+    @FXML
+    private Pane addCoursePane;
+
+    @FXML
+    private TextField studentIdField;
+
+    @FXML
+    private Button addStudentButton;
+
+    @FXML
+    private TableView studentsTableView;
+
+    @FXML
+    private Label studentErrorLabel;
+
+    @FXML
+    private TextField titleField;
+
+    @FXML
+    private TextField capacityField;
+
+    ObservableList<User> studentsList = FXCollections.observableArrayList();
 
     @FXML
     public void onProfileButtonClicked(){
@@ -187,6 +214,44 @@ public class HomePageController implements Initializable {
         }
     }
 
+    @FXML
+    public void onAddNewCourseButtonClicked(){
+        homepagePane.setVisible(false);
+        addCoursePane.setVisible(true);
+    }
+
+    @FXML
+    public void onDoneButtonClicked(){
+        StringBuilder studentIds = new StringBuilder();
+        for (User student: studentsList){
+            studentIds.append(student.getId()).append(",");
+        }
+        Database.addLesson(new Lesson(titleField.getText(), 0, user.getId(), Integer.parseInt(capacityField.getText()), String.valueOf(studentIds), null, null, null, null));
+        addCoursePane.setVisible(false);
+        homepagePane.setVisible(true);
+
+    }
+
+    @FXML
+    public void onAddNewStudentButtonClicked(){
+        studentIdField.setVisible(true);
+        addStudentButton.setVisible(true);
+    }
+
+    @FXML
+    public void onAddStudentButtonClicked(){
+        try {
+            if(studentsList.contains(Database.getUser(studentIdField.getText() , false))){
+                throw new StudentAlreadyExistsException();
+            }
+            studentsList.add(Database.getUser(studentIdField.getText() , false));
+        }catch (RuntimeException e){
+            studentErrorLabel.setVisible(true);
+            studentErrorLabel.setText(e.getMessage());
+        }
+
+    }
+
     public static void setUser(User user){
         HomePageController.user = user;
     }
@@ -218,5 +283,24 @@ public class HomePageController implements Initializable {
                 }
             }
         }
+        if(user.getRole().equals("Teacher")){
+            addNewCourseButton.setVisible(true);
+        }
+        studentsTableView.getColumns().clear();
+        TableColumn<User, String> idColumn = new TableColumn<>("Student ID");
+        idColumn.setMinWidth(100);
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<User, String> firstnameColumn = new TableColumn<>("Firstname");
+        firstnameColumn.setMinWidth(100);
+        firstnameColumn.setCellValueFactory(new PropertyValueFactory<>("firstname"));
+
+        TableColumn<User, String> lastnameColumn = new TableColumn<>("Lastname");
+        lastnameColumn.setMinWidth(100);
+        lastnameColumn.setCellValueFactory(new PropertyValueFactory<>("lastname"));
+
+        studentsTableView.getColumns().addAll(idColumn, firstnameColumn , lastnameColumn);
+
+        studentsTableView.setItems(studentsList);
     }
 }

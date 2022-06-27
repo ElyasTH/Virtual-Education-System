@@ -21,7 +21,7 @@ public class Assignment {
             idCount = Database.getLastId("assignments");
             if (idCount == 0) idCount = 1000;
             else idCount++;
-            this.lessonId = idCount;
+            this.id = idCount;
         }
         else this.id = id;
         this.startDate = startDate;
