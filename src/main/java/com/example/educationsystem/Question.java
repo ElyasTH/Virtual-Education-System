@@ -5,10 +5,10 @@ public abstract class Question {
     private int examId;
     private  int questionId;
     private String question;
-    private double score;
+    private float score;
     private static int questionCount = 10000;
 
-    public Question(int lessonId, int examId, int questionId, double score, String question) {
+    public Question(int lessonId, int examId, int questionId, float score, String question) {
         this.lessonId = lessonId;
         this.examId = examId;
         if (questionId == 0){
@@ -20,5 +20,25 @@ public abstract class Question {
         this.score = score;
         this.question = question;
         questionCount++;
+    }
+
+    public int getLessonId() {
+        return lessonId;
+    }
+
+    public int getExamId() {
+        return examId;
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public float getScore() {
+        return score;
     }
 }

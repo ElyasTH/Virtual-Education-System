@@ -1,6 +1,7 @@
 package com.example.educationsystem;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Assignment {
     private String title;
@@ -8,11 +9,11 @@ public class Assignment {
     private String file;
     private int lessonId;
     private int id;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private static int idCount = 1000;
 
-    public Assignment(String title, String description, String file, int lessonId, int id, LocalDate startDate, LocalDate endDate) {
+    public Assignment(String title, String description, String file, int lessonId, int id, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.description = description;
         this.file = file;
@@ -24,6 +25,7 @@ public class Assignment {
             this.id = idCount;
         }
         else this.id = id;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -48,11 +50,11 @@ public class Assignment {
         return id;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 }

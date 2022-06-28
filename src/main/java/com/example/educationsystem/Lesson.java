@@ -1,13 +1,12 @@
 package com.example.educationsystem;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Lesson {
     private String title;
     private int lessonId;
-    private User teacher;
+    private String teacherId;
     private int capacity;
     private ArrayList<String> studentIds =new ArrayList<>();
     private ArrayList<Assignment> assignments = new ArrayList<>();
@@ -27,13 +26,13 @@ public class Lesson {
             this.lessonId = lessonCount;
         }
         else this.lessonId = lessonId;
-        this.teacher = Database.getUser(teacherId, true);
+        this.teacherId = teacherId;
         this.capacity = capacity;
-        if (studentIds != null) setStudents(studentIds);
-        if (assignmentIds != null) setAssignments(assignmentIds);
-        if (contentIds != null) setContent(contentIds);
-        if (examIds != null) setExams(examIds);
-        if (noticeIds != null) setNotices(noticeIds);
+        if (studentIds != null && studentIds.length() > 1) setStudents(studentIds);
+        if (assignmentIds != null && assignmentIds.length() > 1) setAssignments(assignmentIds);
+        if (contentIds != null && contentIds.length() > 1) setContent(contentIds);
+        if (examIds != null && examIds.length() > 1) setExams(examIds);
+        if (noticeIds != null && noticeIds.length() > 1) setNotices(noticeIds);
     }
 
     public void setStudents(String studentIds) {
@@ -42,34 +41,38 @@ public class Lesson {
 
     public void setAssignments(String assignmentIds) {
         String[] ids = assignmentIds.split(",");
-
-        for (String id : ids) {
-            this.assignments.add(Database.getAssignment(Integer.parseInt(id)));
-        }
+        try{
+            for (String id : ids) {
+                this.assignments.add(Database.getAssignment(Integer.parseInt(id)));
+            }
+        }catch (RuntimeException ignored){}
     }
 
     public void setContent(String contentIds) {
         String[] ids = contentIds.split(",");
-
-        for (String id : ids) {
-            this.assignments.add(Database.getAssignment(Integer.parseInt(id)));
-        }
+        try {
+            for (String id : ids) {
+                this.content.add(Database.getContent(Integer.parseInt(id)));
+            }
+        }catch (RuntimeException ignored){};
     }
 
     public void setExams(String examIds) {
         String[] ids = examIds.split(",");
-
-        for (String id : ids) {
-            this.exams.add(Database.getExam(Integer.parseInt(id)));
-        }
+        try {
+            for (String id : ids) {
+                this.exams.add(Database.getExam(Integer.parseInt(id)));
+            }
+        } catch (RuntimeException ignored){};
     }
 
     public void setNotices(String noticeIds) {
         String[] ids = noticeIds.split(",");
-
-        for (String id : ids) {
-           this.notices.add(Database.getNotice(Integer.parseInt(id)));
-        }
+        try {
+            for (String id : ids) {
+                this.notices.add(Database.getNotice(Integer.parseInt(id)));
+            }
+        }catch (RuntimeException ignored){};
     }
 
     public String getTitle() {
@@ -80,8 +83,8 @@ public class Lesson {
         return lessonId;
     }
 
-    public User getTeacher() {
-        return teacher;
+    public String getTeacherId() {
+        return teacherId;
     }
 
     public int getCapacity() {
@@ -106,5 +109,21 @@ public class Lesson {
 
     public ArrayList<Notice> getNotices() {
         return notices;
+    }
+
+    public void addNotice(Notice notice){
+        this.notices.add(notice);
+    }
+
+    public void addAssignment(Assignment assignment){
+        this.assignments.add(assignment);
+    }
+
+    public void addContent(Content content){
+        this.content.add(content);
+    }
+
+    public void addExam(Exam exam){
+        this.exams.add(exam);
     }
 }

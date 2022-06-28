@@ -16,7 +16,10 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -156,12 +159,15 @@ public class LoginPageController implements Initializable{
                 else throw new InvalidPasswordException();
             }
             try {
+                System.out.println(Database.getAssignment(1000).getStartDate() + "\n" +
+                        Database.getAssignment(1000).getEndDate());
                 HomePageController.setUser(user);
                 Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("home_page.fxml")).load()));
             }catch (IOException e){
                 e.printStackTrace();
             }
         }catch (RuntimeException e){
+            e.printStackTrace();
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }
@@ -205,7 +211,7 @@ public class LoginPageController implements Initializable{
                     (value.equals("Teacher") && IdField.getText().length() != 6)){
                 throw new InvalidIdException();
             }
-            if(! (phoneField.getText().length() == 11 && phoneField.getText().startsWith("09"))){
+            if(!(phoneField.getText().length() == 11 && phoneField.getText().startsWith("09"))){
                 throw new InvalidPhoneNumberException();
             }
             if(! (passwordField.getText().equals(passwordRepField.getText()))){
@@ -213,7 +219,7 @@ public class LoginPageController implements Initializable{
             }
             newUser = new User(firstnameField.getText(), lastnameField.getText(), majorField.getText(), IdField.getText(),
                     emailField.getText(), phoneField.getText(), roleBox.getValue().toString(), profileImage.getImage().getUrl(),
-                    usernameField.getText(), passwordField.getText(), null, false);
+                    usernameField.getText(), passwordField.getText(), null, null, null, false);
             Database.check_user_info_existence(newUser.getId(), newUser.getUsername(), newUser.getEmail(), newUser.getPhone());
             Database.newUser(newUser);
             registerMessageLabel.setText("New user '" + newUser.getUsername() + "' registered." );
@@ -223,7 +229,6 @@ public class LoginPageController implements Initializable{
             errorLabel.setVisible(true);
             errorLabel.setText(e.getMessage());
         }
-
     }
 
     @FXML
@@ -246,4 +251,5 @@ public class LoginPageController implements Initializable{
         ObservableList<String> roleItems = FXCollections.observableArrayList("Student", "Teacher" , "");
         roleBox.setItems(roleItems);
     }
+
 }

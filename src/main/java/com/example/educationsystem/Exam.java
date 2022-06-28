@@ -1,18 +1,18 @@
 package com.example.educationsystem;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Exam {
     private String title;
     private int lessonId;
     private int examId;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private static int examCount = 1000;
-    private ArrayList<Question> questions = new ArrayList<>();
+    private ArrayList<Question> questions;
 
-    public Exam(String title, int lessonId,int examId, LocalDate startDate, LocalDate endDate, ArrayList<Question> questions) {
+    public Exam(String title, int lessonId, int examId, LocalDateTime startDate, LocalDateTime endDate, ArrayList<Question> questions) {
         this.title = title;
         this.lessonId = lessonId;
         if (lessonId == 0) {
@@ -33,5 +33,29 @@ public class Exam {
 
     public int getExamId() {
         return examId;
+    }
+
+    public int getId() {
+        return examId;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public int getLessonId() {
+        return lessonId;
+    }
+
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
+
+    public void addQuestion(Question question){
+        this.questions.add(question);
     }
 }

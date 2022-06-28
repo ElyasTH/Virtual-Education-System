@@ -227,9 +227,10 @@ public class HomePageController implements Initializable {
             studentIds.append(student.getId()).append(",");
         }
         Database.addLesson(new Lesson(titleField.getText(), 0, user.getId(), Integer.parseInt(capacityField.getText()), String.valueOf(studentIds), null, null, null, null));
+        user = Database.getUser(user.getId(), true);
+        initialize(null, null);
         addCoursePane.setVisible(false);
         homepagePane.setVisible(true);
-
     }
 
     @FXML
