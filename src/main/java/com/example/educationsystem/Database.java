@@ -286,12 +286,9 @@ public class Database {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                String[] questionIds = rs.getString("questionIds").split(",");
-                for (String questionId: questionIds){
-                    questions.add(getQuestion(Integer.parseInt(questionId)));
-                }
                 return new Exam(rs.getString("name"), rs.getInt("lessonId"), rs.getInt("id"),
-                        rs.getTimestamp("startTime").toLocalDateTime(), rs.getTimestamp("endTime").toLocalDateTime(), questions);
+                        rs.getTimestamp("startTime").toLocalDateTime(), rs.getTimestamp("endTime").toLocalDateTime(),
+                        rs.getString("questionIds"));
             } else throw new InvalidUserException();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -306,7 +303,7 @@ public class Database {
     }
 
     public static Question getQuestion(int questionId){
-        final String query = "SELECT lessonId, examId, id, question, score, type, options, correctOption, correctAnswer FROM questions " +
+        final String query = "SELECT lessonId, id, question, score, type, options, correctOption, correctAnswer FROM questions " +
                 "WHERE id=" + questionId;
 
         Connection conn = get_connection();
@@ -317,13 +314,13 @@ public class Database {
 
             if (rs.next()) {
                 switch (rs.getString("type")){
-                    case "descriptive": return new DescriptiveQuestion(rs.getInt("lessonId"), rs.getInt("examId"),
+                    case "descriptive": return new DescriptiveQuestion(rs.getInt("lessonId"),
                             rs.getInt("id"), rs.getFloat("score"), rs.getString("question"));
-                    case "multipleChoice": return new MultipleChoiceQuestion(rs.getInt("lessonId"), rs.getInt("examId"),
-                            rs.getInt("questionId"), rs.getFloat("score"), rs.getString("question"), rs.getString("options").split(","),
+                    case "multipleChoice": return new MultipleChoiceQuestion(rs.getInt("lessonId"),
+                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), rs.getString("options").split(","),
                             rs.getInt("correctOption"));
-                    case "trueFalseQuestion": return new TrueFalseQuestion(rs.getInt("lessonId"), rs.getInt("examId"),
-                            rs.getInt("questionId"), rs.getFloat("score"), rs.getString("question"),
+                    case "trueFalse": return new TrueFalseQuestion(rs.getInt("lessonId"),
+                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"),
                             rs.getBoolean("correctAnswer"));
                 }
             } else throw new InvalidUserException();
@@ -476,7 +473,6 @@ public class Database {
             StringBuilder questionIds = new StringBuilder();
             for (Question question: exam.getQuestions()){
                 questionIds.append(question.getQuestionId()).append(",");
-                addQuestion(question);
             }
             preparedStmt.setString(3, String.valueOf(questionIds));
             preparedStmt.setString(4, exam.getStartDate().format(formatter));
@@ -499,8 +495,8 @@ public class Database {
     }
 
     public static void addQuestion(Question question){
-        String sql = " insert into questions (type, question, score, id, examId, lessonId, options, correctOption, correctAnswer)"
-                + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = " insert into questions (type, question, score, id, lessonId, options, correctOption, correctAnswer)"
+                + " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
         Connection conn = get_connection();
         try{
@@ -515,24 +511,28 @@ public class Database {
             preparedStmt.setString(2, question.getQuestion());
             preparedStmt.setFloat(3, question.getScore());
             preparedStmt.setInt(4, question.getQuestionId());
-            preparedStmt.setInt(5, question.getExamId());
-            preparedStmt.setInt(6, question.getLessonId());
+            preparedStmt.setInt(5, question.getLessonId());
             if (type.equals("multipleChoice")){
                 MultipleChoiceQuestion mcQuestion = (MultipleChoiceQuestion) question;
                 StringBuilder options = new StringBuilder();
                 for (String option: mcQuestion.getOptions()){
                     options.append(option).append(",");
                 }
-                preparedStmt.setString(7, String.valueOf(options));
-                preparedStmt.setInt(8, mcQuestion.getCorrectOption());
+                preparedStmt.setString(6, String.valueOf(options));
+                preparedStmt.setInt(7, mcQuestion.getCorrectOption());
+                preparedStmt.setString(8, null);
             }
             else if (type.equals("trueFalse")) {
-                preparedStmt.setBoolean(9, ((TrueFalseQuestion) question).getCorrectAnswer());
+                preparedStmt.setString(6, null);
+                preparedStmt.setString(7, null);
+                preparedStmt.setBoolean(8, ((TrueFalseQuestion) question).getCorrectAnswer());
+            }
+            else {
+                preparedStmt.setString(6, null);
+                preparedStmt.setString(7, null);
+                preparedStmt.setString(8, null);
             }
             preparedStmt.execute();
-            Exam exam = getExam(question.getExamId());
-            exam.addQuestion(question);
-            updateExam(exam);
         } catch (SQLException e) {
             e.printStackTrace();
         }

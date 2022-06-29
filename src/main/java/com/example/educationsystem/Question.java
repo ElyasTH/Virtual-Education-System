@@ -2,21 +2,21 @@ package com.example.educationsystem;
 
 public abstract class Question {
     private int lessonId;
-    private int examId;
     private  int questionId;
     private String question;
     private float score;
     private static int questionCount = 10000;
 
-    public Question(int lessonId, int examId, int questionId, float score, String question) {
+    public Question(int lessonId, int questionId, float score, String question) {
         this.lessonId = lessonId;
-        this.examId = examId;
         if (questionId == 0){
+            questionCount = Database.getLastId("questions");
+            if (questionCount == 0) questionCount = 10000;
+            else questionCount++;
             this.questionId = questionCount;
             questionCount++;
-        }else{
-            this.questionId = questionId;
         }
+        else this.questionId = questionId;
         this.score = score;
         this.question = question;
         questionCount++;
@@ -24,10 +24,6 @@ public abstract class Question {
 
     public int getLessonId() {
         return lessonId;
-    }
-
-    public int getExamId() {
-        return examId;
     }
 
     public int getQuestionId() {
