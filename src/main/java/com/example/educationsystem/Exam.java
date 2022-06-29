@@ -12,7 +12,7 @@ public class Exam {
     private static int examCount = 1000;
     private ArrayList<Question> questions = new ArrayList<>();
 
-    public Exam(String title, int lessonId, int examId, LocalDateTime startDate, LocalDateTime endDate, String questionIds) {
+    public Exam(String title, int lessonId, int examId, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.lessonId = lessonId;
         if (lessonId == 0) {
@@ -24,9 +24,6 @@ public class Exam {
         else this.examId = examId;
         this.startDate = startDate;
         this.endDate = endDate;
-        for (String questionId: questionIds.split(",")){
-            this.questions.add(Database.getQuestion(Integer.parseInt(questionId)));
-        }
     }
 
     public String getTitle() {
@@ -57,7 +54,9 @@ public class Exam {
         return questions;
     }
 
-    public void addQuestion(Question question){
-        this.questions.add(question);
+    public void setQuestions(String questionIds){
+        for (String questionId: questionIds.split(",")) {
+            this.questions.add(Database.getQuestion(Integer.parseInt(questionId)));
+        }
     }
 }

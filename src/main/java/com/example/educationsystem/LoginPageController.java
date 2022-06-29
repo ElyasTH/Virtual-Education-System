@@ -159,8 +159,6 @@ public class LoginPageController implements Initializable{
                 else throw new InvalidPasswordException();
             }
             try {
-                System.out.println(Database.getAssignment(1000).getStartDate() + "\n" +
-                        Database.getAssignment(1000).getEndDate());
                 HomePageController.setUser(user);
                 Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("home_page.fxml")).load()));
             }catch (IOException e){

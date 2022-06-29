@@ -1,15 +1,14 @@
 package com.example.educationsystem;
 
 import Exceptions.*;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/educationsystem";
@@ -286,9 +285,10 @@ public class Database {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                return new Exam(rs.getString("name"), rs.getInt("lessonId"), rs.getInt("id"),
-                        rs.getTimestamp("startTime").toLocalDateTime(), rs.getTimestamp("endTime").toLocalDateTime(),
-                        rs.getString("questionIds"));
+                Exam exam = new Exam(rs.getString("name"), rs.getInt("lessonId"), rs.getInt("id"),
+                        rs.getTimestamp("startTime").toLocalDateTime(), rs.getTimestamp("endTime").toLocalDateTime());
+                exam.setQuestions(rs.getString("questionIds"));
+                return exam;
             } else throw new InvalidUserException();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -315,13 +315,17 @@ public class Database {
             if (rs.next()) {
                 switch (rs.getString("type")){
                     case "descriptive": return new DescriptiveQuestion(rs.getInt("lessonId"),
-                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"));
-                    case "multipleChoice": return new MultipleChoiceQuestion(rs.getInt("lessonId"),
-                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), rs.getString("options").split(","),
-                            rs.getInt("correctOption"));
+                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), QuestionType.DescriptiveQuestion);
+                    case "multipleChoice":{
+                        ArrayList<String> options = new ArrayList<>();
+                        options.addAll(Arrays.asList(rs.getString("options").split(",")));
+                        return new MultipleChoiceQuestion(rs.getInt("lessonId"),
+                                rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), QuestionType.MultipleChoiceQuestion, options,
+                                rs.getInt("correctOption"));
+                    }
                     case "trueFalse": return new TrueFalseQuestion(rs.getInt("lessonId"),
                             rs.getInt("id"), rs.getFloat("score"), rs.getString("question"),
-                            rs.getBoolean("correctAnswer"));
+                            QuestionType.TrueFalseQuestion, rs.getBoolean("correctAnswer"));
                 }
             } else throw new InvalidUserException();
         } catch (SQLException ex) {
@@ -457,11 +461,14 @@ public class Database {
         }
     }
 
-    public static void addExam(Exam exam){
+    public static void addExam(Exam exam, ObservableList<Question> questions){
         String sql = " insert into exams (name, id, questionIds, startTime, endTime, lessonId)"
                 + " values (?, ?, ?, ?, ?, ?)";
 
         Connection conn = get_connection();
+        for (Question question: questions){
+            Database.addQuestion(question);
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

@@ -5,9 +5,10 @@ public abstract class Question {
     private  int questionId;
     private String question;
     private float score;
+    private QuestionType questionType;
     private static int questionCount = 10000;
 
-    public Question(int lessonId, int questionId, float score, String question) {
+    public Question(int lessonId, int questionId, float score, String question, QuestionType questionType) {
         this.lessonId = lessonId;
         if (questionId == 0){
             questionCount = Database.getLastId("questions");
@@ -19,7 +20,7 @@ public abstract class Question {
         else this.questionId = questionId;
         this.score = score;
         this.question = question;
-        questionCount++;
+        this.questionType = questionType;
     }
 
     public int getLessonId() {
@@ -37,4 +38,10 @@ public abstract class Question {
     public float getScore() {
         return score;
     }
+}
+
+enum QuestionType{
+    DescriptiveQuestion,
+    MultipleChoiceQuestion,
+    TrueFalseQuestion;
 }

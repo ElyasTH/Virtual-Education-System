@@ -1,9 +1,6 @@
 package com.example.educationsystem;
 
-import Exceptions.InvalidEmailException;
-import Exceptions.InvalidPasswordException;
-import Exceptions.InvalidPhoneNumberException;
-import Exceptions.StudentAlreadyExistsException;
+import Exceptions.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -114,6 +111,9 @@ public class HomePageController implements Initializable {
     @FXML
     private TextField capacityField;
 
+    @FXML
+    private Label errorLessonLabel;
+
     ObservableList<User> studentsList = FXCollections.observableArrayList();
 
     @FXML
@@ -184,6 +184,7 @@ public class HomePageController implements Initializable {
         errorLabel.setVisible(false);
         updateLabel.setVisible(false);
         profilePane.setVisible(false);
+        addCoursePane.setVisible(false);
         homepagePane.setVisible(true);
     }
 
@@ -222,15 +223,22 @@ public class HomePageController implements Initializable {
 
     @FXML
     public void onDoneButtonClicked(){
-        StringBuilder studentIds = new StringBuilder();
-        for (User student: studentsList){
-            studentIds.append(student.getId()).append(",");
+        try {
+            if (titleField.getText().equals("") || capacityField.getText().equals("")){
+                throw new InvalidLessonException();
+            }
+            StringBuilder studentIds = new StringBuilder();
+            for (User student: studentsList){
+                studentIds.append(student.getId()).append(",");
+            }
+            Database.addLesson(new Lesson(titleField.getText(), 0, user.getId(), Integer.parseInt(capacityField.getText()), String.valueOf(studentIds), null, null, null, null));
+            user = Database.getUser(user.getId(), true);
+            initialize(null, null);
+            addCoursePane.setVisible(false);
+            homepagePane.setVisible(true);
+        }catch (RuntimeException e){
+            errorLessonLabel.setText(e.getMessage());
         }
-        Database.addLesson(new Lesson(titleField.getText(), 0, user.getId(), Integer.parseInt(capacityField.getText()), String.valueOf(studentIds), null, null, null, null));
-        user = Database.getUser(user.getId(), true);
-        initialize(null, null);
-        addCoursePane.setVisible(false);
-        homepagePane.setVisible(true);
     }
 
     @FXML

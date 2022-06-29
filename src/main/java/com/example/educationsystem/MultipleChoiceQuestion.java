@@ -1,16 +1,18 @@
 package com.example.educationsystem;
 
+import java.util.ArrayList;
+
 public class MultipleChoiceQuestion extends Question{
-    private String[] options;
+    private ArrayList<String> options;
     private int correctOption;
 
-    public MultipleChoiceQuestion(int lessonId, int questionId, float score, String question, String[] options, int correctOption) {
-        super(lessonId, questionId, score, question);
+    public MultipleChoiceQuestion(int lessonId, int questionId, float score, String question, QuestionType questionType, ArrayList<String> options, int correctOption) {
+        super(lessonId, questionId, score, question, questionType);
         this.options = options;
         this.correctOption = correctOption;
     }
 
-    public String[] getOptions() {
+    public ArrayList<String> getOptions() {
         return options;
     }
 
