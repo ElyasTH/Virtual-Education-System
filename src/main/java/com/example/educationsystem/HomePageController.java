@@ -270,6 +270,16 @@ public class HomePageController implements Initializable {
 
     }
 
+    @FXML
+    public void onMessengerButtonClicked(){
+        try {
+            MessengerPageController.setUser(user);
+            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("messenger_page.fxml")).load()));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public static void setUser(User user){
         HomePageController.user = user;
     }
