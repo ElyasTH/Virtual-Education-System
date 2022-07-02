@@ -15,7 +15,7 @@ public class Exam {
     public Exam(String title, int lessonId, int examId, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.lessonId = lessonId;
-        if (lessonId == 0) {
+        if (examId == 0) {
             examCount = Database.getLastId("exams");
             if (examCount == 0) examCount = 1000;
             else examCount++;

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -12,7 +15,7 @@
    <children>
       <Pane fx:id="assignmentPane" prefHeight="534.0" prefWidth="850.0" visible="false">
          <children>
-            <Label fx:id="titleLabel" layoutX="24.0" layoutY="63.0" prefHeight="37.0" prefWidth="312.0" text="Title :" underline="true">
+            <Label fx:id="assignmentTitleLabel" layoutX="24.0" layoutY="63.0" prefHeight="37.0" prefWidth="312.0" text="Title :" underline="true">
                <font>
                   <Font size="20.0" />
                </font>
@@ -32,6 +35,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label alignment="CENTER" prefHeight="27.0" prefWidth="406.0" text="Remaining Time ">
@@ -49,15 +53,30 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="27.0" prefWidth="411.0" text="File" GridPane.rowIndex="3">
+                  <Label alignment="CENTER" prefHeight="27.0" prefWidth="411.0" text="Assignment File" GridPane.rowIndex="3">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="assignmentRemainingTime" GridPane.columnIndex="1" />
-                  <Label fx:id="assignmentStatusLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="assignmentScoreLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button fx:id="assignmentFileButton" alignment="CENTER" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="assignmentRemainingTime" alignment="CENTER" prefHeight="95.0" prefWidth="399.0" GridPane.columnIndex="1" />
+                  <Label fx:id="assignmentStatusLabel" alignment="CENTER" prefHeight="81.0" prefWidth="399.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="assignmentScoreLabel" alignment="CENTER" prefHeight="86.0" prefWidth="399.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="assignmentStatusLabel" alignment="CENTER" prefHeight="69.0" prefWidth="503.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="assignmenScoreLabel" alignment="CENTER" prefHeight="68.0" prefWidth="510.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Hyperlink alignment="CENTER" prefHeight="29.0" prefWidth="398.0" text="Assignment file" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Hyperlink>
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="400.0" text="Uploaded File" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Hyperlink alignment="CENTER" prefHeight="29.0" prefWidth="446.0" text="Uploaded file" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Hyperlink>
                </children>
             </GridPane>
             <Button layoutX="382.0" layoutY="463.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="82.0" text="Upload" />
@@ -95,6 +114,15 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="629.0" prefWidth="366.0">
+                           <children>
+                              <Label fx:id="noticeDescriptionLabel" alignment="TOP_LEFT" layoutY="4.0" prefHeight="655.0" prefWidth="369.0" wrapText="true" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                </children>
             </GridPane>
          </children>
@@ -106,7 +134,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="56.0" prefHeight="30.0" prefWidth="343.0" text="Title :" underline="true">
+            <Label fx:id="contentTitleLabel" layoutX="46.0" layoutY="56.0" prefHeight="30.0" prefWidth="343.0" text="Title :" underline="true">
                <font>
                   <Font size="20.0" />
                </font>
@@ -131,6 +159,12 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <content>
+                        <Label fx:id="contentDescriptionLabel" alignment="TOP_LEFT" prefHeight="588.0" prefWidth="357.0" />
+                     </content>
+                  </ScrollPane>
+                  <Hyperlink alignment="CENTER" prefHeight="106.0" prefWidth="376.0" text="Uploaded file" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
@@ -142,7 +176,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="51.0" layoutY="49.0" prefHeight="30.0" prefWidth="312.0" text="Title :" underline="true">
+            <Label fx:id="examTitleLabel" layoutX="51.0" layoutY="49.0" prefHeight="30.0" prefWidth="312.0" text="Title :" underline="true">
                <font>
                   <Font size="20.0" />
                </font>
@@ -167,10 +201,10 @@
                   </Label>
                   <Label alignment="CENTER" prefHeight="21.0" prefWidth="403.0" text="Exam Status" GridPane.rowIndex="1">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="393.0" text="Exam Type" GridPane.rowIndex="2">
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="393.0" text="Exam Duration" GridPane.rowIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -185,11 +219,17 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Label fx:id="examRemainingTime" alignment="CENTER" prefHeight="71.0" prefWidth="376.0" wrapText="true" GridPane.columnIndex="1" />
+                  <Label fx:id="examStatusLabel" alignment="CENTER" prefHeight="64.0" prefWidth="475.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="examDurationLabel" alignment="CENTER" prefHeight="64.0" prefWidth="415.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="examScoreLabel" alignment="CENTER" prefHeight="63.0" prefWidth="407.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Hyperlink alignment="CENTER" prefHeight="81.0" prefWidth="376.0" text="Uploaded file" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
             <Button layoutX="387.0" layoutY="472.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="82.0" text="Start" />
             <Label alignment="CENTER" layoutX="336.0" layoutY="440.0" prefHeight="21.0" prefWidth="183.0" text="Exam upload time is over." textFill="#ee4f4f" visible="false" />
          </children>
       </Pane>
+      <Button fx:id="backButton" layoutX="773.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="37.0" prefWidth="63.0" text="Back" />
    </children>
 </Pane>

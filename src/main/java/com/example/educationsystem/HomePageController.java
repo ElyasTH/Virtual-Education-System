@@ -1,6 +1,9 @@
 package com.example.educationsystem;
 
 import Exceptions.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,10 +17,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable {
@@ -113,6 +119,9 @@ public class HomePageController implements Initializable {
 
     @FXML
     private Label errorLessonLabel;
+
+    @FXML
+    private Label timeLabel;
 
     ObservableList<User> studentsList = FXCollections.observableArrayList();
 
@@ -267,6 +276,12 @@ public class HomePageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e ->
+                timeLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"+"\n"+"HH:mm:ss")))),
+                new KeyFrame(Duration.seconds(1)));
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+
         saveButton.setDisable(true);
         usernameLabel.setText(user.getUsername());
         passwordField.textProperty().addListener(((observableValue, s, t1) -> {

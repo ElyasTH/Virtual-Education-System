@@ -11,9 +11,7 @@ public abstract class Question {
     public Question(int lessonId, int questionId, float score, String question, QuestionType questionType) {
         this.lessonId = lessonId;
         if (questionId == 0){
-            questionCount = Database.getLastId("questions");
             if (questionCount == 0) questionCount = 10000;
-            else questionCount++;
             this.questionId = questionCount;
             questionCount++;
         }
@@ -37,6 +35,11 @@ public abstract class Question {
 
     public float getScore() {
         return score;
+    }
+
+    public static void loadLastId(){
+        questionCount = Database.getLastId("questions");
+        questionCount++;
     }
 }
 

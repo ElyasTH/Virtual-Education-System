@@ -1,9 +1,9 @@
 package com.example.educationsystem;
 
-import Exceptions.InvalidAssignmentException;
-import Exceptions.InvalidContentException;
-import Exceptions.InvalidExamException;
-import Exceptions.InvalidNoticeException;
+import Exceptions.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,10 +14,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -161,6 +163,15 @@ public class CoursePageController implements Initializable {
     @FXML
     private ListView optionsListView;
 
+    @FXML
+    private Label timeLabel;
+
+    @FXML
+    private Button addOptionButton;
+
+    @FXML
+    private Label optionsLabel;
+
     ObservableList<Question> questionsList = FXCollections.observableArrayList();
 
     ArrayList<String> optionsList = new ArrayList<>();
@@ -174,7 +185,7 @@ public class CoursePageController implements Initializable {
     }
 
     @FXML
-    public void onContentButtonClicked(ContentType contentType, int id){
+    public void onContentHyperlinkClicked(ContentType contentType, int id){
         try {
             CourseContentPageController.setUser(user);
             CourseContentPageController.setLesson(lesson);
@@ -236,6 +247,7 @@ public class CoursePageController implements Initializable {
         coursePagePane.setVisible(false);
         newExamPane.setVisible(true);
         backButton.setVisible(true);
+        Question.loadLastId();
         ObservableList<String> questionTypeItems = FXCollections.observableArrayList("DescriptiveQuestion", "MultipleChoiceQuestion", "TrueFalseQuestion");
         questionTypeBox.setItems(questionTypeItems);
     }
@@ -248,6 +260,9 @@ public class CoursePageController implements Initializable {
             }
             Database.addNotice(new Notice(newNoticeTitleField.getText(), newNoticeDescriptionField.getText(),
                     lesson.getLessonId(), 0));
+            newNoticePane.setVisible(false);
+            coursePagePane.setVisible(true);
+            backButton.setVisible(false);
         }catch (RuntimeException e){
             errorNewContentLabel.setText(e.getMessage());
             errorNewContentLabel.setVisible(true);
@@ -262,6 +277,9 @@ public class CoursePageController implements Initializable {
             }
             Database.addContent(new Content(newContentTitleField.getText(), newContentDescriptionField.getText(),
                     lesson.getLessonId(), 0, newContentFileNameField.getText()));
+            newContentPane.setVisible(false);
+            coursePagePane.setVisible(true);
+            backButton.setVisible(false);
         }catch (RuntimeException e){
             errorNewContentLabel.setText(e.getMessage());
             errorNewContentLabel.setVisible(true);
@@ -269,11 +287,40 @@ public class CoursePageController implements Initializable {
     }
 
     @FXML
+    public void onQuestionTypeBoxClicked(){
+        addQuestionPane.setVisible(true);
+        if (questionTypeBox.getValue().toString().equals("DescriptiveQuestion")){
+            answerField.setDisable(true);
+            optionField.setDisable(true);
+            addOptionButton.setDisable(true);
+            optionsLabel.setVisible(false);
+            optionsListView.setVisible(false);
+        }else if (questionTypeBox.getValue().toString().equals("MultipleChoiceQuestion")){
+            answerField.setDisable(false);
+            optionField.setDisable(false);
+            addOptionButton.setDisable(false);
+            optionsLabel.setVisible(true);
+            optionsListView.setVisible(true);
+        }else if (questionTypeBox.getValue().toString().equals("TrueFalseQuestion")) {
+            answerField.setDisable(false);
+            optionField.setDisable(true);
+            addOptionButton.setDisable(true);
+            optionsLabel.setVisible(false);
+            optionsListView.setVisible(false);
+        }
+        questionTitleArea.clear();
+        scoreField.clear();
+        answerField.clear();
+        optionField.clear();
+        optionsListView.getItems().clear();
+    }
+
+    @FXML
     public void onNewAssignmentDoneButtonClicked(){
         try {
             if(newAssignmentTitleField.getText().equals("") || startDateAssignment.equals(null) || endDateAssignment.equals(null) ||
                         startHourAssignmentField.getText().equals("") || startMinuteAssignmentField.getText().equals("") || endHourAssignmentField.getText().equals("")||
-                        endMinuteAssignmentField.getText().equals("") || newAssignmentFileNameField.getText().equals("")){
+                        endMinuteAssignmentField.getText().equals("")){
                 throw new InvalidAssignmentException();
             }
             Database.addAssignment(new Assignment(newAssignmentTitleField.getText(), newAssignmentDescriptionField.getText(),
@@ -284,6 +331,9 @@ public class CoursePageController implements Initializable {
                     LocalDateTime.of(endDateAssignment.getValue().getYear(), endDateAssignment.getValue().getMonthValue(),
                             endDateAssignment.getValue().getDayOfMonth(), Integer.parseInt(endHourAssignmentField.getText()),
                             Integer.parseInt(endMinuteAssignmentField.getText()), 0)));
+            newAssignmentPane.setVisible(false);
+            coursePagePane.setVisible(true);
+            backButton.setVisible(false);
         }catch (RuntimeException e){
             errorNewContentLabel.setText(e.getMessage());
             errorNewContentLabel.setVisible(true);
@@ -304,8 +354,11 @@ public class CoursePageController implements Initializable {
             Database.addExam(new Exam(newExamTitleField.getText(), lesson.getLessonId(), 0, LocalDateTime.of(startDateExam.getValue().getYear(),
                     startDateExam.getValue().getMonthValue(), startDateExam.getValue().getDayOfMonth(), Integer.parseInt(startHourExamField.getText()),
                     Integer.parseInt(startMinuteExamField.getText()), 0), LocalDateTime.of(endDateExam.getValue().getYear(), endDateExam.getValue().getMonthValue(),
-                    endDateExam.getValue().getDayOfMonth(), Integer.parseInt(startHourExamField.getText()),
-                    Integer.parseInt(startMinuteExamField.getText()), 0 )), questionsList);
+                    endDateExam.getValue().getDayOfMonth(), Integer.parseInt(endHourExamField.getText()),
+                    Integer.parseInt(endMinuteExamField.getText()), 0 )), questionsList);
+            newExamPane.setVisible(false);
+            coursePagePane.setVisible(true);
+            backButton.setVisible(false);
         }catch (RuntimeException e){
             e.printStackTrace();
             errorNewContentLabel.setText(e.getMessage());
@@ -314,7 +367,33 @@ public class CoursePageController implements Initializable {
 
     @FXML
     public void onAddNewQuestionButton(){
-        addQuestionPane.setVisible(true);
+        try {
+            addQuestionPane.setVisible(true);
+            if (questionTypeBox.getValue().toString().equals("DescriptiveQuestion")){
+                answerField.setDisable(true);
+                optionField.setDisable(true);
+                addOptionButton.setDisable(true);
+                optionsLabel.setVisible(false);
+                optionsListView.setVisible(false);
+            }else if (questionTypeBox.getValue().toString().equals("MultipleChoiceQuestion")){
+                answerField.setDisable(false);
+                optionField.setDisable(false);
+                addOptionButton.setDisable(false);
+                optionsLabel.setVisible(true);
+                optionsListView.setVisible(true);
+            }else if (questionTypeBox.getValue().toString().equals("TrueFalseQuestion")){
+                answerField.setDisable(false);
+                optionField.setDisable(true);
+                addOptionButton.setDisable(true);
+                optionsLabel.setVisible(false);
+                optionsListView.setVisible(false);
+            }else {
+                throw new InvalidQuestionTypeException();
+            }
+        }catch (RuntimeException e){
+            errorNewContentLabel.setText(e.getMessage());
+            errorNewContentLabel.setVisible(true);
+        }
     }
 
     @FXML
@@ -329,16 +408,29 @@ public class CoursePageController implements Initializable {
             questionsList.add(new TrueFalseQuestion(lesson.getLessonId(), 0, Float.parseFloat(scoreField.getText()),
                     questionTitleArea.getText(), QuestionType.TrueFalseQuestion, Boolean.parseBoolean(answerField.getText())));
         }
+        addQuestionPane.setVisible(false);
+        questionTitleArea.clear();
+        scoreField.clear();
+        answerField.clear();
+        optionField.clear();
+        optionsListView.getItems().clear();
     }
 
     @FXML
     public void onAddOptionButtonClicked(){
         optionsList.add(optionField.getText());
         optionsListView.getItems().add(optionField.getText());
+        optionField.clear();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e ->
+                timeLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"+"\n"+"HH:mm:ss")))),
+                new KeyFrame(Duration.seconds(1)));
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+
         if(user.getRole().equals("Teacher")){
             addNewNoticeButton.setVisible(true);
             addNewContentButton.setVisible(true);
@@ -348,41 +440,41 @@ public class CoursePageController implements Initializable {
         lessonNameLabel.setText(lesson.getTitle());
         for(int i = 0 , noticeNumber = 0 ; i <= 20 ; i++){
             if(noticeNumber < lesson.getNotices().size()){
-                Button noticeButton = new Button(lesson.getNotices().get(noticeNumber).getTitle());
+                Hyperlink noticeHyperlink = new Hyperlink(lesson.getNotices().get(noticeNumber).getTitle());
                 final int noticeNum = noticeNumber;
-                noticeButton.setOnAction(e -> onContentButtonClicked(ContentType.Notice,
+                noticeHyperlink.setOnAction(e -> onContentHyperlinkClicked(ContentType.Notice,
                         lesson.getNotices().get(noticeNum).getId()));
-                noticePane.add(noticeButton , 0 , i);
+                noticePane.add(noticeHyperlink , 0 , i);
                 noticeNumber++;
             }
         }
         for(int i = 0 , contentNumber = 0 ; i <= 20 ; i++){
             if(contentNumber < lesson.getContent().size()){
-                Button contentButton = new Button(lesson.getContent().get(contentNumber).getTitle());
+                Hyperlink contentHyperlink = new Hyperlink(lesson.getContent().get(contentNumber).getTitle());
                 final int contentNum = contentNumber;
-                contentButton.setOnAction(e -> onContentButtonClicked(ContentType.Content,
+                contentHyperlink.setOnAction(e -> onContentHyperlinkClicked(ContentType.Content,
                         lesson.getContent().get(contentNum).getId()));
-                contentPane.add(contentButton , 0 , i);
+                contentPane.add(contentHyperlink , 0 , i);
                 contentNumber++;
             }
         }
         for(int i = 0 , assignmentNumber = 0; i <= 20 ; i++){
             if(assignmentNumber < lesson.getAssignments().size()){
-                Button assignmentButton = new Button(lesson.getAssignments().get(assignmentNumber).getTitle());
+                Hyperlink assignmentHyperlink = new Hyperlink(lesson.getAssignments().get(assignmentNumber).getTitle());
                 final int assignmentNum = assignmentNumber;
-                assignmentButton.setOnAction(e -> onContentButtonClicked(ContentType.Assignment,
+                assignmentHyperlink.setOnAction(e -> onContentHyperlinkClicked(ContentType.Assignment,
                         lesson.getAssignments().get(assignmentNum).getId()));
-                assignmentPane.add(assignmentButton , 0 , i);
+                assignmentPane.add(assignmentHyperlink , 0 , i);
                 assignmentNumber++;
             }
         }
         for(int i = 0 , examNumber = 0; i <= 20 ; i++){
             if(examNumber < lesson.getExams().size()){
-                Button examButton = new Button(lesson.getExams().get(examNumber).getTitle());
+                Hyperlink examHyperlink = new Hyperlink(lesson.getExams().get(examNumber).getTitle());
                 final int examNum = examNumber;
-                examButton.setOnAction(e -> onContentButtonClicked(ContentType.Exam,
+                examHyperlink.setOnAction(e -> onContentHyperlinkClicked(ContentType.Exam,
                         lesson.getExams().get(examNum).getExamId()));
-                examPane.add(examButton , 0 , i);
+                examPane.add(examHyperlink , 0 , i);
                 examNumber++;
             }
         }
@@ -401,5 +493,7 @@ public class CoursePageController implements Initializable {
         questionsTable.getColumns().addAll(questionTitleColumn, scoreColumn);
 
         questionsTable.setItems(questionsList);
+
+
     }
 }

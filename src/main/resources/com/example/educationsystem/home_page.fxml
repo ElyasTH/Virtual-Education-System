@@ -18,19 +18,21 @@
    <children>
       <Pane fx:id="homepagePane" layoutX="11.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="875.0">
          <children>
-            <Label layoutX="666.0" layoutY="62.0" prefHeight="21.0" prefWidth="129.0" text="Label" />
-            <Label layoutX="666.0" layoutY="31.0" prefHeight="21.0" prefWidth="129.0" text="Label" />
+            <Label fx:id="timeLabel" alignment="TOP_LEFT" contentDisplay="TOP" layoutX="666.0" layoutY="31.0" prefHeight="72.0" prefWidth="129.0" wrapText="true">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font></Label>
             <Button fx:id="profileButton" layoutX="152.0" layoutY="31.0" mnemonicParsing="false" onAction="#onProfileButtonClicked" prefHeight="31.0" prefWidth="65.0" text="Profile" />
             <Button fx:id="messengerButton" layoutX="153.0" layoutY="72.0" mnemonicParsing="false" text="Messenger" />
-            <Button fx:id="exitButton" layoutX="788.0" layoutY="518.0" mnemonicParsing="false" onAction="#onExitButtonClicked" prefHeight="32.0" prefWidth="72.0" text="Log out" />
+            <Button fx:id="exitButton" layoutX="788.0" layoutY="527.0" mnemonicParsing="false" onAction="#onExitButtonClicked" prefHeight="32.0" prefWidth="72.0" text="Log out" />
             <ImageView fx:id="homepageProfile" fitHeight="84.0" fitWidth="82.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../assets/avatar.png" />
                </image>
             </ImageView>
-            <ScrollPane layoutX="289.0" layoutY="168.0" prefHeight="275.0" prefWidth="571.0">
+            <ScrollPane layoutX="289.0" layoutY="168.0" prefHeight="342.0" prefWidth="571.0">
                <content>
-                  <Pane prefHeight="557.0" prefWidth="550.0">
+                  <Pane prefHeight="629.0" prefWidth="550.0">
                      <children>
                         <GridPane fx:id="coursePane" layoutX="26.0" layoutY="66.0" prefHeight="879.0" prefWidth="498.0">
                           <columnConstraints>
@@ -61,7 +63,7 @@
                   </Pane>
                </content>
             </ScrollPane>
-            <ScrollPane layoutX="12.0" layoutY="168.0" prefHeight="275.0" prefWidth="258.0">
+            <ScrollPane layoutX="12.0" layoutY="168.0" prefHeight="342.0" prefWidth="258.0">
                <content>
                   <Pane prefHeight="581.0" prefWidth="239.0">
                      <children>
@@ -75,7 +77,7 @@
                </content>
             </ScrollPane>
             <Label fx:id="usernameLabel" layoutX="14.0" layoutY="101.0" prefHeight="21.0" prefWidth="89.0" text="label" textAlignment="CENTER" />
-            <Button fx:id="addNewCourseButton" layoutX="289.0" layoutY="450.0" mnemonicParsing="false" onAction="#onAddNewCourseButtonClicked" text="Add new course" visible="false" />
+            <Button fx:id="addNewCourseButton" layoutX="289.0" layoutY="518.0" mnemonicParsing="false" onAction="#onAddNewCourseButtonClicked" text="Add new course" visible="false" />
          </children>
       </Pane>
       <Pane fx:id="profilePane" layoutX="19.0" layoutY="16.0" prefHeight="561.0" prefWidth="858.0" visible="false">

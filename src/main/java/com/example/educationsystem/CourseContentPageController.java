@@ -1,12 +1,17 @@
 package com.example.educationsystem;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 public class CourseContentPageController implements Initializable {
@@ -44,9 +49,38 @@ public class CourseContentPageController implements Initializable {
     private Label assignmentScoreLabel;
 
     @FXML
-    private Button assignmentFileButton;
+    private Label assignmentTitleLabel;
+
+    @FXML
+    private Label examTitleLabel;
+
+    @FXML
+    private Label examRemainingTime;
+
+    @FXML
+    private Label examStatusLabel;
+
+    @FXML
+    private Label examDurationLabel;
+
+    @FXML
+    private Label examScoreLabel;
+
+    @FXML
+    private Label contentDescriptionLabel;
+
+    @FXML
+    private Label contentTitleLabel;
 
 
+    @FXML
+    public void onBackButton(){
+        try {
+            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("course_page.fxml")).load()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void setLesson(Lesson lesson) {
         CourseContentPageController.lesson = lesson;
@@ -66,17 +100,96 @@ public class CourseContentPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         if (contentType == ContentType.Content){
             Content content = Database.getContent(contentId);
             contentPane.setVisible(true);
+            contentTitleLabel.setText(content.getTitle());
+            contentDescriptionLabel.setText(content.getDescription());
         }
         if (contentType == ContentType.Exam){
             Exam exam =Database.getExam(contentId);
             examPane.setVisible(true);
+            examTitleLabel.setText(exam.getTitle());
+            LocalDateTime from = exam.getEndDate();
+            LocalDateTime to = LocalDateTime.now();
+            LocalDateTime fromTemp = LocalDateTime.from(from);
+            long years = fromTemp.until(to, ChronoUnit.YEARS);
+            fromTemp = fromTemp.plusYears(years);
+            long months =fromTemp.until(to, ChronoUnit.MONTHS);
+            fromTemp =fromTemp.plusMonths(months);
+            long days = fromTemp.until(to, ChronoUnit.DAYS);
+            fromTemp = fromTemp.plusDays(days);
+            long hours = fromTemp.until(to, ChronoUnit.HOURS);
+            fromTemp = fromTemp.plusHours(hours);
+            long minutes = fromTemp.until(to, ChronoUnit.MINUTES);
+            if (years >= 0 && months >= 0 && days >= 0 && hours >= 0 && minutes >= 0){
+                examRemainingTime.setText(years + "years, " + months + "months, " + days + "days, " + hours + "hours, " + minutes + "minutes" + "have passed.");
+            }else if (years <= 0 && months <= 0 && days <= 0 && hours <= 0 && minutes <= 0){
+                years = -1 * years;
+                months = -1 * months;
+                days = -1 * days;
+                hours = -1 * hours;
+                minutes = -1 * minutes;
+                examRemainingTime.setText(years + " years, " + months + " months, " + days + " days, " + hours + " hours, " + minutes + " minutes " + "left.");
+            }
+
+            LocalDateTime end = exam.getEndDate();
+            LocalDateTime start = exam.getStartDate();
+            LocalDateTime temp = LocalDateTime.from(start);
+            long hour = temp.until(end, ChronoUnit.HOURS);
+            temp = temp.plusHours(hour);
+            long minute = temp.until(end, ChronoUnit.MINUTES);
+            examDurationLabel.setText(hour + " hour, " + minute + " minute");
+
+            if (user.getExamsContent().get(exam.getId()) != null){
+                examStatusLabel.setText("Uploaded");
+            }else{
+                examStatusLabel.setText("Not Uploaded");
+            }
+            if ( user.getExamsContent().get(exam.getId()) != null){
+                examScoreLabel.setText(user.getAssignmentsContent().get(exam.getId()).get(0).toString());
+            }else {
+                examScoreLabel.setText("-");
+            }
         }
         if (contentType == ContentType.Assignment){
             Assignment assignment = Database.getAssignment(contentId);
             assignmentPane.setVisible(true);
+            assignmentTitleLabel.setText(assignment.getTitle());
+            LocalDateTime from = assignment.getEndDate();
+            LocalDateTime to = LocalDateTime.now();
+            LocalDateTime fromTemp = LocalDateTime.from(from);
+            long years = fromTemp.until(to, ChronoUnit.YEARS);
+            fromTemp = fromTemp.plusYears(years);
+            long months =fromTemp.until(to, ChronoUnit.MONTHS);
+            fromTemp =fromTemp.plusMonths(months);
+            long days = fromTemp.until(to, ChronoUnit.DAYS);
+            fromTemp = fromTemp.plusDays(days);
+            long hours = fromTemp.until(to, ChronoUnit.HOURS);
+            fromTemp = fromTemp.plusHours(hours);
+            long minutes = fromTemp.until(to, ChronoUnit.MINUTES);
+            fromTemp = fromTemp.plusMinutes(minutes);
+            if (years >= 0 && months >= 0 && days >= 0 && hours >= 0 && minutes >= 0){
+                assignmentRemainingTime.setText(years + " years, " + months + " months, " + days + " days, " + hours + " hours, " + minutes + " minutes " + "have passed.");
+            }else if (years <= 0 && months <= 0 && days <= 0 && hours <= 0 && minutes <= 0){
+                years = -1 * years;
+                months = -1 * months;
+                days = -1 * days;
+                hours = -1 * hours;
+                minutes = -1 * minutes;
+                assignmentRemainingTime.setText(years + " years, " + months + " months, " + days + " days, " + hours + " hours, " + minutes + " minutes " + "left.");
+            }
+            if (user.getAssignmentsContent().get(assignment.getId()) != null){
+                assignmentStatusLabel.setText("Uploaded");
+            }else{
+                assignmentStatusLabel.setText("Not Uploaded");
+            }
+            if ( user.getAssignmentsContent().get(assignment.getId()) != null){
+                assignmentScoreLabel.setText(user.getAssignmentsContent().get(assignment.getId()).get(0).toString());
+            }else {
+                assignmentScoreLabel.setText("-");
+            }
         }
         if (contentType == ContentType.Notice){
             Notice notice = Database.getNotice(contentId);

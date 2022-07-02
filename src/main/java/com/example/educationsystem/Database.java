@@ -478,7 +478,7 @@ public class Database {
             preparedStmt.setInt(2, exam.getId());
 
             StringBuilder questionIds = new StringBuilder();
-            for (Question question: exam.getQuestions()){
+            for (Question question: questions){
                 questionIds.append(question.getQuestionId()).append(",");
             }
             preparedStmt.setString(3, String.valueOf(questionIds));

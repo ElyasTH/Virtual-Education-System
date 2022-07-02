@@ -24,8 +24,10 @@
                   <Font size="25.0" />
                </font>
             </Label>
-            <Label layoutX="821.0" layoutY="50.0" prefHeight="21.0" prefWidth="199.0" text="Time :" />
-            <Label layoutX="821.0" layoutY="79.0" prefHeight="21.0" prefWidth="199.0" text="Date :" />
+            <Label fx:id="timeLabel" alignment="TOP_LEFT" layoutX="821.0" layoutY="50.0" prefHeight="67.0" prefWidth="199.0">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font></Label>
             <ScrollPane layoutX="14.0" layoutY="156.0" prefHeight="413.0" prefWidth="259.0">
                <content>
                   <GridPane fx:id="noticePane" prefHeight="1032.0" prefWidth="240.0">
@@ -254,7 +256,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <ComboBox fx:id="questionTypeBox" layoutX="717.0" layoutY="108.0" prefHeight="31.0" prefWidth="231.0" promptText="Question type" />
+            <ComboBox fx:id="questionTypeBox" layoutX="717.0" layoutY="108.0" onAction="#onQuestionTypeBoxClicked" prefHeight="31.0" prefWidth="231.0" promptText="Question type" />
             <DatePicker fx:id="startDateExam" layoutX="90.0" layoutY="195.0" />
             <DatePicker fx:id="endDateExam" layoutX="90.0" layoutY="273.0" />
             <TextField fx:id="endMinuteExamField" layoutX="458.0" layoutY="273.0" prefHeight="31.0" prefWidth="45.0" />
@@ -273,13 +275,14 @@
             <Label layoutX="397.0" layoutY="249.0" text="Time :" />
             <Pane fx:id="addQuestionPane" layoutX="581.0" layoutY="183.0" prefHeight="456.0" prefWidth="523.0" visible="false">
                <children>
-                  <ListView fx:id="optionsListView" layoutX="17.0" layoutY="252.0" prefHeight="135.0" prefWidth="490.0" />
+                  <ListView fx:id="optionsListView" layoutX="17.0" layoutY="264.0" prefHeight="135.0" prefWidth="490.0" />
                   <TextArea fx:id="questionTitleArea" layoutX="17.0" layoutY="14.0" prefHeight="125.0" prefWidth="490.0" promptText="Question" wrapText="true" />
                   <TextField fx:id="scoreField" layoutX="17.0" layoutY="146.0" prefHeight="31.0" prefWidth="224.0" promptText="Score" />
                   <TextField fx:id="answerField" layoutX="285.0" layoutY="146.0" prefHeight="31.0" prefWidth="224.0" promptText="Answer" />
                   <TextField fx:id="optionField" layoutX="17.0" layoutY="197.0" prefHeight="31.0" prefWidth="365.0" promptText="Option" />
-                  <Button layoutX="405.0" layoutY="197.0" mnemonicParsing="false" onAction="#onAddOptionButtonClicked" prefHeight="31.0" prefWidth="104.0" text="Add option" />
+                  <Button fx:id="addOptionButton" layoutX="405.0" layoutY="197.0" mnemonicParsing="false" onAction="#onAddOptionButtonClicked" prefHeight="31.0" prefWidth="104.0" text="Add option" />
                   <Button layoutX="230.0" layoutY="411.0" mnemonicParsing="false" onAction="#onAddQuestionButtonClicked" prefHeight="31.0" prefWidth="64.0" text="Add" />
+                  <Label fx:id="optionsLabel" layoutX="17.0" layoutY="243.0" text="Options List :" />
                </children>
             </Pane>
          </children>
