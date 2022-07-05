@@ -267,14 +267,13 @@ public class HomePageController implements Initializable {
             studentErrorLabel.setVisible(true);
             studentErrorLabel.setText(e.getMessage());
         }
-
     }
 
     @FXML
     public void onMessengerButtonClicked(){
         try {
-            MessengerPageController.setUser(user);
-            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("messenger_page.fxml")).load()));
+            GroupsPageController.setUser(user);
+            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("groups_page.fxml")).load()));
         }catch (IOException e){
             e.printStackTrace();
         }

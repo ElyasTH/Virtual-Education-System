@@ -4,11 +4,8 @@ import Exceptions.*;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.Date;
 
 public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/educationsystem";
@@ -80,13 +77,12 @@ public class Database {
 
             StringBuilder examsContent = new StringBuilder();
             for (Map.Entry<Integer, ArrayList<Object>> content: user.getExamsContent().entrySet()){
-                examsContent.append(content.getKey()).append("/,/").append(content.getValue().get(0)).append("/,/")
-                        .append(content.getValue().get(1)).append("/,/");
+                examsContent.append(content.getKey()).append("/,/").append(content.getValue().get(0)).append("/,/");
                 StringBuilder answers = new StringBuilder();
-                for (Map.Entry<Integer, Object> answer: ((HashMap<Integer, Object>) content.getValue().get(2)).entrySet()){
+                for (Map.Entry<Integer, Object> answer: ((HashMap<Integer, Object>) content.getValue().get(1)).entrySet()){
                     answers.append(answer.getKey()).append("/:/").append(answer.getValue()).append("/@/");
                 }
-                examsContent.append(answers).append("/,/").append(content.getValue().get(3)).append("\n");
+                examsContent.append(answers).append("/,/").append(content.getValue().get(2)).append("\n");
             }
             preparedStmt.setString(7, String.valueOf(examsContent));
             preparedStmt.setString(8, user.getId());
@@ -209,7 +205,7 @@ public class Database {
             if (rs.next()) {
                 return new Assignment(rs.getString("name"), rs.getString("description"), rs.getString("file"), rs.getInt("lessonId"),
                         rs.getInt("id"), rs.getTimestamp("startTime").toLocalDateTime(), rs.getTimestamp("endTime").toLocalDateTime());
-            } else throw new InvalidUserException();
+            } else throw new ItemNotFoundInDatabaseException();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally {
@@ -235,7 +231,7 @@ public class Database {
             if (rs.next()) {
                 return new Content(rs.getString("name"), rs.getString("description"), rs.getInt("lessonId"),
                         rs.getInt("id"), rs.getString("file"));
-            } else throw new InvalidUserException();
+            } else throw new ItemNotFoundInDatabaseException();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally {
@@ -260,7 +256,7 @@ public class Database {
             // Extract data from result set
             if (rs.next()) {
                 return new Notice(rs.getString("name"), rs.getString("description"), rs.getInt("lessonId"), rs.getInt("id"));
-            } else throw new InvalidUserException();
+            } else throw new ItemNotFoundInDatabaseException();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally {
@@ -552,6 +548,99 @@ public class Database {
         }
     }
 
+    public static void addMessengerGroup(MessengerGroup messengerGroup){
+        String sql = " insert into messengergroups (name, lessonId, memberIds, adminId)"
+                + " values (?, ?, ?, ?)";
+
+        Connection conn = get_connection();
+        try{
+            if (conn == null) return;
+            PreparedStatement preparedStmt = conn.prepareStatement(sql);
+            preparedStmt.setString(1, messengerGroup.getName());
+            preparedStmt.setInt(2, messengerGroup.getLessonId());
+            StringBuilder memberIds = new StringBuilder();
+            for (String memberId: messengerGroup.getMemberIds()){
+                memberIds.append(memberId).append(",");
+            }
+            preparedStmt.setString(3, String.valueOf(memberIds));
+            preparedStmt.setString(4, messengerGroup.getAdminId());
+            preparedStmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void updateMessengerGroup(MessengerGroup messengerGroup){
+        String sql = "update messengergroups set name = ?, memberIds = ?, messageList = ?" +
+                "where lessonId=" + messengerGroup.getLessonId();
+
+        Connection conn = get_connection();
+        try {
+            if (conn == null) return;
+            PreparedStatement preparedStmt = conn.prepareStatement(sql);
+            preparedStmt.setString(1, messengerGroup.getName());
+
+            StringBuilder memberIds = new StringBuilder();
+            for (String memberId: messengerGroup.getMemberIds()){
+                memberIds.append(memberId).append(",");
+            }
+            preparedStmt.setString(2, String.valueOf(memberIds));
+
+            StringBuilder messageList = new StringBuilder();
+            for (String message: messengerGroup.getMessageList()){
+                messageList.append(message).append("\n");
+            }
+            preparedStmt.setString(3, String.valueOf(messageList));
+            preparedStmt.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try{
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static MessengerGroup getMessengerGroup(int lessonId){
+        final String query = "SELECT name, lessonId, memberIds, adminId, messageList FROM messengergroups " +
+                "WHERE lessonId=" + lessonId;
+
+        Connection conn = get_connection();
+        try {
+            if (conn == null) return null;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                ArrayList<String> messageList = null;
+                try{
+                    messageList = new ArrayList<>(Arrays.asList(rs.getString("messageList").split("\n")));
+                } catch (NullPointerException ignored){}
+
+                return new MessengerGroup(rs.getString("name"), rs.getInt("lessonId"), rs.getString("memberIds"),
+                        rs.getString("adminId"), messageList);
+            } else throw new ItemNotFoundInDatabaseException();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally {
+            try{
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static int getLastId(String tableName){
         String query = "SELECT MAX(id) FROM " + tableName;
 
@@ -614,28 +703,6 @@ public class Database {
             preparedStmt.setString(3, String.valueOf(assignmentIds));
             preparedStmt.setString(4, String.valueOf(examIds));
             preparedStmt.setString(5, String.valueOf(contentIds));
-            preparedStmt.execute();
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            try{
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void updateExam(Exam exam){
-        String sql = "update exams set questionIds = ? " +
-                "where id=" + exam.getExamId();
-        StringBuilder questionIds = new StringBuilder();
-
-        Connection conn = get_connection();
-        try {
-            if (conn == null) return;
-            PreparedStatement preparedStmt = conn.prepareStatement(sql);
-            preparedStmt.setString(1, String.valueOf(questionIds));
             preparedStmt.execute();
         } catch (SQLException e){
             e.printStackTrace();

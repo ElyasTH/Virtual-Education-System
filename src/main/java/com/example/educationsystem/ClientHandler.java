@@ -10,7 +10,6 @@ public class ClientHandler implements Runnable{
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String username;
 
     public ClientHandler(Socket socket) {
         try {
@@ -38,7 +37,7 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void broadcastMessage(String message){
+    synchronized public void broadcastMessage(String message){
         for (ClientHandler clientHandler: clientHandlers){
             try{
                 if (clientHandler != this){

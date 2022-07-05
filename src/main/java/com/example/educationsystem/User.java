@@ -1,14 +1,9 @@
 package com.example.educationsystem;
 
-import javafx.scene.chart.PieChart;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class User {
     private String firstname;
@@ -56,18 +51,18 @@ public class User {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
                 HashMap<Integer, Object> answers = new HashMap<>();
-                for (String answer : content[3].split("/@/")) {
+                for (String answer : content[2].split("/@/")) {
                     Question question = Database.getQuestion(Integer.parseInt(answer.split("/:/")[0]));
                     if (question instanceof DescriptiveQuestion) {
                         answers.put(question.getQuestionId(), answer.split("/:/")[1]);
                     } else if (question instanceof MultipleChoiceQuestion) {
                         answers.put(question.getQuestionId(), Integer.parseInt(answer.split("/:/")[1]));
                     } else if (question instanceof TrueFalseQuestion) {
-                        answers.put(question.getQuestionId(), Boolean.parseBoolean(answer.split("/:/")[2]));
+                        answers.put(question.getQuestionId(), Boolean.parseBoolean(answer.split("/:/")[1]));
                     }
                 }
-                addExamContent(Integer.parseInt(content[0]), Float.parseFloat(content[1]), content[2], answers,
-                        LocalDateTime.parse(content[4].split("\\.")[0].replace("T", " "), formatter));
+                addExamContent(Integer.parseInt(content[0]), Float.parseFloat(content[1]), answers,
+                        LocalDateTime.parse(content[3].split("\\.")[0].replace("T", " "), formatter));
             }
         }
     }
@@ -154,10 +149,9 @@ public class User {
         Database.updateUser(this);
     }
 
-    public void addExamContent(int examId, float score, String answerFile, HashMap<Integer, Object> answers,  LocalDateTime uploadTime){
+    public void addExamContent(int examId, float score, HashMap<Integer, Object> answers,  LocalDateTime uploadTime){
         ArrayList<Object> content = new ArrayList<>();
         content.add(score);
-        content.add(answerFile);
         content.add(answers);
         content.add(uploadTime);
         this.examsContent.put(examId, content);

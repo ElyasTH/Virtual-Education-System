@@ -4,29 +4,34 @@ import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Client {
 
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String username;
+    private User user;
+    private VBox messageBox;
+    private Thread messageListener;
 
     public Client(Socket socket, User user) {
         try {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.username = user.getUsername();
+            this.user = user;
         }catch (IOException e){
             e.printStackTrace();
-            closeEverything(socket, bufferedReader, bufferedWriter);
+            closeEverything();
         }
     }
 
     public void sendMessage(String message){
         try{
-            bufferedWriter.write(username + ": " + message);
+            bufferedWriter.write(user.getUsername() + ": " + message + "      " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                    "/,/" + user.getId());
             bufferedWriter.newLine();
             bufferedWriter.flush();
         }catch (IOException e){
@@ -35,7 +40,7 @@ public class Client {
     }
 
     public void listenForMessage(VBox messageBox){
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String receivedMessage;
@@ -43,17 +48,20 @@ public class Client {
                 while (socket.isConnected()){
                     try{
                         receivedMessage = bufferedReader.readLine();
-                        MessengerPageController.addLabel(receivedMessage, messageBox);
+                        if (receivedMessage != null)
+                            MessengerPageController.addLabel(receivedMessage, messageBox);
                     }catch (IOException e){
-                        e.printStackTrace();
-                        closeEverything(socket, bufferedReader, bufferedWriter);
+                        closeEverything();
+                        break;
                     }
                 }
             }
-        }).start();
+        });
+        this.messageListener = thread;
+        messageListener.start();
     }
 
-    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
+    public void closeEverything(){
         try{
             if (socket != null){
                 socket.close();
@@ -64,6 +72,7 @@ public class Client {
             if (bufferedWriter != null){
                 bufferedWriter.close();
             }
+            messageListener.interrupt();
         } catch (IOException e){
             e.printStackTrace();
         }
