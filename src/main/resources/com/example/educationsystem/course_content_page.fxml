@@ -191,7 +191,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label alignment="CENTER" prefHeight="21.0" prefWidth="394.0" text="Remaining Time">
@@ -214,19 +213,13 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="390.0" text="File" GridPane.rowIndex="4">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
                   <Label fx:id="examRemainingTime" alignment="CENTER" prefHeight="71.0" prefWidth="376.0" wrapText="true" GridPane.columnIndex="1" />
                   <Label fx:id="examStatusLabel" alignment="CENTER" prefHeight="64.0" prefWidth="475.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="examDurationLabel" alignment="CENTER" prefHeight="64.0" prefWidth="415.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label fx:id="examScoreLabel" alignment="CENTER" prefHeight="63.0" prefWidth="407.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Hyperlink alignment="CENTER" prefHeight="81.0" prefWidth="376.0" text="Uploaded file" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
-            <Button layoutX="387.0" layoutY="472.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="82.0" text="Start" />
+            <Button layoutX="387.0" layoutY="472.0" mnemonicParsing="false" onAction="#onStartExamButtonClicked" prefHeight="48.0" prefWidth="82.0" text="Start" />
             <Label alignment="CENTER" layoutX="336.0" layoutY="440.0" prefHeight="21.0" prefWidth="183.0" text="Exam upload time is over." textFill="#ee4f4f" visible="false" />
          </children>
       </Pane>

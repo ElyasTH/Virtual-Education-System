@@ -82,6 +82,17 @@ public class CourseContentPageController implements Initializable {
         }
     }
 
+    @FXML
+    public void onStartExamButtonClicked(){
+        try {
+            ExamPageController.setExam(Database.getExam(contentId));
+            ExamPageController.setUser(user);
+            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("exam_page.fxml")).load()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void setLesson(Lesson lesson) {
         CourseContentPageController.lesson = lesson;
     }
@@ -111,7 +122,7 @@ public class CourseContentPageController implements Initializable {
             Exam exam =Database.getExam(contentId);
             examPane.setVisible(true);
             examTitleLabel.setText(exam.getTitle());
-            LocalDateTime from = exam.getEndDate();
+            LocalDateTime from = exam.getStartDate();
             LocalDateTime to = LocalDateTime.now();
             LocalDateTime fromTemp = LocalDateTime.from(from);
             long years = fromTemp.until(to, ChronoUnit.YEARS);
@@ -124,7 +135,7 @@ public class CourseContentPageController implements Initializable {
             fromTemp = fromTemp.plusHours(hours);
             long minutes = fromTemp.until(to, ChronoUnit.MINUTES);
             if (years >= 0 && months >= 0 && days >= 0 && hours >= 0 && minutes >= 0){
-                examRemainingTime.setText(years + "years, " + months + "months, " + days + "days, " + hours + "hours, " + minutes + "minutes" + "have passed.");
+                examRemainingTime.setText(years + " years, " + months + " months, " + days + " days, " + hours + " hours, " + minutes + " minutes" + " have passed.");
             }else if (years <= 0 && months <= 0 && days <= 0 && hours <= 0 && minutes <= 0){
                 years = -1 * years;
                 months = -1 * months;
@@ -147,8 +158,12 @@ public class CourseContentPageController implements Initializable {
             }else{
                 examStatusLabel.setText("Not Uploaded");
             }
-            if ( user.getExamsContent().get(exam.getId()) != null){
-                examScoreLabel.setText(user.getAssignmentsContent().get(exam.getId()).get(0).toString());
+            if (user.getExamsContent().get(exam.getId()) != null){
+                try {
+                    examScoreLabel.setText(user.getAssignmentsContent().get(exam.getId()).get(0).toString());
+                }catch (NullPointerException e){
+                    examScoreLabel.setText("-");
+                }
             }else {
                 examScoreLabel.setText("-");
             }

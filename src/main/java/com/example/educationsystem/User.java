@@ -32,7 +32,7 @@ public class User {
         this.picture = picture.replace("file:/", "");
         this.username = username;
         this.password = password;
-        if (lessonIds != null && getLessons) {
+        if (lessonIds != null && getLessons && lessonIds.length()>1) {
             for (String lessonId : lessonIds.split(",")) {
                 this.lessons.add(Database.getLesson(Integer.parseInt(lessonId)));
             }

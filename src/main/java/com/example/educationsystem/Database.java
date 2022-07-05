@@ -311,17 +311,17 @@ public class Database {
             if (rs.next()) {
                 switch (rs.getString("type")){
                     case "descriptive": return new DescriptiveQuestion(rs.getInt("lessonId"),
-                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), QuestionType.DescriptiveQuestion);
+                            rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), "DescriptiveQuestion");
                     case "multipleChoice":{
                         ArrayList<String> options = new ArrayList<>();
                         options.addAll(Arrays.asList(rs.getString("options").split(",")));
                         return new MultipleChoiceQuestion(rs.getInt("lessonId"),
-                                rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), QuestionType.MultipleChoiceQuestion, options,
+                                rs.getInt("id"), rs.getFloat("score"), rs.getString("question"), "MultipleChoiceQuestion", options,
                                 rs.getInt("correctOption"));
                     }
                     case "trueFalse": return new TrueFalseQuestion(rs.getInt("lessonId"),
                             rs.getInt("id"), rs.getFloat("score"), rs.getString("question"),
-                            QuestionType.TrueFalseQuestion, rs.getBoolean("correctAnswer"));
+                            "TrueFalseQuestion", rs.getBoolean("correctAnswer"));
                 }
             } else throw new InvalidUserException();
         } catch (SQLException ex) {
@@ -715,4 +715,3 @@ public class Database {
         }
     }
 }
-

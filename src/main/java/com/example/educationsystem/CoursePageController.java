@@ -400,13 +400,13 @@ public class CoursePageController implements Initializable {
     public void onAddQuestionButtonClicked(){
         if (questionTypeBox.getValue().toString().equals("DescriptiveQuestion")){
             questionsList.add(new DescriptiveQuestion(lesson.getLessonId(),0, Float.parseFloat(scoreField.getText()),
-                    questionTitleArea.getText(), QuestionType.DescriptiveQuestion ));
+                    questionTitleArea.getText(), "DescriptiveQuestion" ));
         }else if (questionTypeBox.getValue().toString().equals("MultipleChoiceQuestion")){
             questionsList.add(new MultipleChoiceQuestion(lesson.getLessonId(), 0, Float.parseFloat(scoreField.getText()),
-                    questionTitleArea.getText(), QuestionType.MultipleChoiceQuestion, optionsList, Integer.parseInt(answerField.getText())));
+                    questionTitleArea.getText(), "MultipleChoiceQuestion", optionsList, Integer.parseInt(answerField.getText())));
         }else if (questionTypeBox.getValue().toString().equals("TrueFalseQuestion")){
             questionsList.add(new TrueFalseQuestion(lesson.getLessonId(), 0, Float.parseFloat(scoreField.getText()),
-                    questionTitleArea.getText(), QuestionType.TrueFalseQuestion, Boolean.parseBoolean(answerField.getText())));
+                    questionTitleArea.getText(), "TrueFalseQuestion", Boolean.parseBoolean(answerField.getText())));
         }
         addQuestionPane.setVisible(false);
         questionTitleArea.clear();
@@ -486,11 +486,11 @@ public class CoursePageController implements Initializable {
         TableColumn<Question, Float> scoreColumn = new TableColumn<>("Score");
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
 
-//        TableColumn<Question, QuestionType> questionTypeColumn = new TableColumn<>("Question type");
-//        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("questionType"));
+        TableColumn<Question, String> questionTypeColumn = new TableColumn<>("Question type");
+        questionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("questionType"));
 
 
-        questionsTable.getColumns().addAll(questionTitleColumn, scoreColumn);
+        questionsTable.getColumns().addAll(questionTitleColumn, scoreColumn, questionTypeColumn);
 
         questionsTable.setItems(questionsList);
 
