@@ -101,7 +101,7 @@ public class MessengerPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
             try {
-                client = new Client(new Socket("7.tcp.eu.ngrok.io", 14586), user, group);
+                client = new Client(new Socket("7.tc.eu.ngrok.io", 14586), user, group);
             } catch (IOException e) {
                 e.printStackTrace();
             }

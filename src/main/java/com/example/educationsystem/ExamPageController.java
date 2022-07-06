@@ -112,9 +112,8 @@ public class ExamPageController implements Initializable {
                         Thread.sleep(1000);
                         if(currSeconds == 0){
                             System.out.println("Finished.");
+                            onSubmitButtonClicked();
                             thread.interrupt();
-                            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("exam_information_page.fxml")).load()));
-                            thread.stop();
                         }
                         currSeconds -= 1;
                     }

@@ -103,8 +103,15 @@ public class CourseContentPageController implements Initializable {
                     e.printStackTrace();
                 }
             }else{
-                errorExamLabel.setText("The time for this exam is over.");
-                startExamButton.setDisable(true);
+                if (LocalDateTime.now().isBefore(Database.getExam(contentId).getEndDate())) {
+                    errorExamLabel.setText("The time for this exam is over.");
+                    errorExamLabel.setVisible(true);
+                    startExamButton.setDisable(true);
+                }else if (LocalDateTime.now().isAfter(Database.getExam(contentId).getStartDate())){
+                    errorExamLabel.setText("This exam has not started yet.");
+                    errorExamLabel.setVisible(true);
+                    startExamButton.setDisable(true);
+                }
             }
         }else{
             errorExamLabel.setText("You have already taken this exam.");

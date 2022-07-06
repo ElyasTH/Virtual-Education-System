@@ -222,8 +222,8 @@
                   <Label fx:id="examScoreLabel" alignment="CENTER" prefHeight="63.0" prefWidth="407.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Button layoutX="387.0" layoutY="472.0" mnemonicParsing="false" onAction="#onStartExamButtonClicked" prefHeight="48.0" prefWidth="82.0" text="Start" />
-            <Label alignment="CENTER" layoutX="336.0" layoutY="440.0" prefHeight="21.0" prefWidth="183.0" text="Exam upload time is over." textFill="#ee4f4f" visible="false" />
+            <Button fx:id="startExamButton" layoutX="387.0" layoutY="472.0" mnemonicParsing="false" onAction="#onStartExamButtonClicked" prefHeight="48.0" prefWidth="82.0" text="Start" />
+            <Label fx:id="errorExamLabel" alignment="CENTER" layoutX="336.0" layoutY="440.0" prefHeight="21.0" prefWidth="183.0" text="Exam upload time is over." textFill="#ee4f4f" visible="false" />
          </children>
       </Pane>
       <Button fx:id="backButton" layoutX="773.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="37.0" prefWidth="63.0" text="Back" />

@@ -26,9 +26,6 @@ public class ExamInformationController implements Initializable {
     private Pane informationPane;
 
     @FXML
-    private Label scoreLabel;
-
-    @FXML
     private Label uploadTimeLabel;
 
     @FXML
@@ -64,7 +61,6 @@ public class ExamInformationController implements Initializable {
     @FXML
     public void onReviewClicked(){
         informationPane.setVisible(false);
-        scoreLabel.setVisible(false);
         backButton.setVisible(false);
         scrollPane.setVisible(true);
         bckBtn.setVisible(true);
