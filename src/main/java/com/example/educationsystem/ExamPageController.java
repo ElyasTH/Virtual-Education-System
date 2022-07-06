@@ -43,7 +43,7 @@ public class ExamPageController implements Initializable {
 
     @FXML
     public void onSubmitButtonClicked(){
-        thread.stop();
+        thread.interrupt();
         try {
             ExamInformationController.setExam(exam);
             ExamInformationController.setUser(user);
@@ -112,8 +112,7 @@ public class ExamPageController implements Initializable {
                         Thread.sleep(1000);
                         if(currSeconds == 0){
                             System.out.println("Finished.");
-
-                            thread.stop();
+                            thread.interrupt();
                         }
                         currSeconds -= 1;
                     }

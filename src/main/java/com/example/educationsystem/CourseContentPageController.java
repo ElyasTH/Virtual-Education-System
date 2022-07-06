@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -107,6 +109,16 @@ public class CourseContentPageController implements Initializable {
 
     public static void setContentType(ContentType contentType) {
         CourseContentPageController.contentType = contentType;
+    }
+
+    @FXML
+    public void onOpenContentFileClicked(){
+        File file = new File(Database.getContent(contentId).getFile().replace("file:/", "").replace("%20", " "));
+        try{
+            Desktop.getDesktop().open(file);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

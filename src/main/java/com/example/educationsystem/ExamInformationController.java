@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,12 +52,7 @@ public class ExamInformationController implements Initializable {
         int i = 0;
         int questionCount = 1;
         for (Question question : questions){
-            String answerToQuestion = null;
-            for (Map.Entry<Integer, Object> answer: ((HashMap<Integer, Object>) user.getExamsContent().get(exam.getExamId()).get(1)).entrySet()){
-                if (answer.getKey().equals(String.valueOf(question.getQuestionId()))){
-                    answerToQuestion = (String) answer.getValue();
-                }
-            };
+            Object userAnswer = ((HashMap<?, ?>) user.getExamsContent().get(exam.getExamId()).get(1)).get(question.getQuestionId());
             Pane questionPane = new Pane();
             questionPane.setPrefSize(916, 328);
             Label questionLabel = new Label("  Question " + questionCount +" : "+ question.getQuestion());
@@ -70,7 +66,8 @@ public class ExamInformationController implements Initializable {
                 questionPane.getChildren().add(answerAreaField);
                 answerAreaField.setLayoutX(10);
                 answerAreaField.setLayoutY(70);
-                answerAreaField.setText(answerToQuestion);
+                answerAreaField.setText((String) userAnswer);
+                answerAreaField.setDisable(true);
             }
             if (question.getQuestionType().equals("TrueFalseQuestion")){
                 ToggleGroup trueFalseToggleGroup = new ToggleGroup();
@@ -86,11 +83,10 @@ public class ExamInformationController implements Initializable {
                 radioButton2.setLayoutX(10);
                 radioButton2.setLayoutY(180);
                 radioButton2.setFont(new Font("System", 16));
-                if (radioButton1.getText().equals(answerToQuestion)){
-                    radioButton1.setSelected(true);
-                }
-                if (radioButton2.getText().equals(answerToQuestion)){
-                    radioButton2.setSelected(true);
+                if (userAnswer != null) {
+                    if ((boolean) userAnswer) {
+                        radioButton1.setSelected(true);
+                    } else radioButton2.setSelected(true);
                 }
                 radioButton1.setDisable(true);
                 radioButton2.setDisable(true);
@@ -101,7 +97,7 @@ public class ExamInformationController implements Initializable {
                 int count = 1;
                 for (String option : ((MultipleChoiceQuestion)question).getOptions()) {
                     RadioButton radioButton = new RadioButton(count + ". " + option);
-                    if (Integer.parseInt(answerToQuestion) == count) radioButton.setSelected(true);
+                    if (userAnswer != null && (int) userAnswer == count) radioButton.setSelected(true);
                     count++;
                     radioButton.setToggleGroup(multipleChoiceToggleGroup);
                     questionPane.getChildren().add(radioButton);
@@ -109,9 +105,6 @@ public class ExamInformationController implements Initializable {
                     radioButton.setLayoutY(num);
                     radioButton.setFont(new Font("System", 16));
                     num = num + 30;
-                    if (radioButton.getText().equals(answerToQuestion)){
-                        radioButton.setSelected(true);
-                    }
                     radioButton.setDisable(true);
                 }
             }

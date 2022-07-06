@@ -12,10 +12,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -421,6 +424,21 @@ public class CoursePageController implements Initializable {
         optionsList.add(optionField.getText());
         optionsListView.getItems().add(optionField.getText());
         optionField.clear();
+    }
+
+    @FXML
+    public void onUploadContentClicked(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Content File.");
+
+        FileChooser.ExtensionFilter fileExtensions =
+                new FileChooser.ExtensionFilter("content files", "*.png", "*.jpg", "*.pdf", "*.txt", "*.docx");
+        fileChooser.getExtensionFilters().add(fileExtensions);
+        File content = fileChooser.showOpenDialog(contentPane.getScene().getWindow());
+
+        if (content != null){
+            newContentFileNameField.setText(content.toURI().toString());
+        }
     }
 
     @Override

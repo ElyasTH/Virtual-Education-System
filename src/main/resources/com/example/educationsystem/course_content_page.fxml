@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.CourseContentPageController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.educationsystem.CourseContentPageController">
    <children>
       <Pane fx:id="assignmentPane" prefHeight="534.0" prefWidth="850.0" visible="false">
          <children>
@@ -109,7 +109,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="noticeDescriptionLabel" alignment="TOP_LEFT" prefHeight="344.0" prefWidth="403.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="noticeDescriptionLabel" alignment="TOP_LEFT" prefHeight="344.0" prefWidth="403.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -164,7 +164,10 @@
                         <Label fx:id="contentDescriptionLabel" alignment="TOP_LEFT" prefHeight="588.0" prefWidth="357.0" />
                      </content>
                   </ScrollPane>
-                  <Hyperlink alignment="CENTER" prefHeight="106.0" prefWidth="376.0" text="Uploaded file" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Hyperlink alignment="CENTER" onAction="#onOpenContentFileClicked" prefHeight="106.0" prefWidth="376.0" text="Open File" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="19.0" />
+                     </font></Hyperlink>
                </children>
             </GridPane>
          </children>

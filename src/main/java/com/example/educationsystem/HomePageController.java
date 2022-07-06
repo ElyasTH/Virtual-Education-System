@@ -16,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -24,6 +26,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable {
@@ -122,6 +126,9 @@ public class HomePageController implements Initializable {
 
     @FXML
     private Label timeLabel;
+
+    @FXML
+    private VBox eventBox;
 
     ObservableList<User> studentsList = FXCollections.observableArrayList();
 
@@ -240,12 +247,21 @@ public class HomePageController implements Initializable {
             for (User student: studentsList){
                 studentIds.append(student.getId()).append(",");
             }
-            Database.addLesson(new Lesson(titleField.getText(), 0, user.getId(), Integer.parseInt(capacityField.getText()), String.valueOf(studentIds), null, null, null, null));
+            Lesson newLesson = new Lesson(titleField.getText(), 0, user.getId(), Integer.parseInt(capacityField.getText()),
+                    String.valueOf(studentIds), null, null, null, null);
+            Database.addLesson(newLesson);
+            StringBuilder memberIds = new StringBuilder();
+            for (String memberId: newLesson.getStudentIds()){
+                memberIds.append(memberId).append(",");
+            }
+            Database.addMessengerGroup(new MessengerGroup(newLesson.getTitle(), newLesson.getLessonId(), String.valueOf(memberIds),
+                    newLesson.getTeacherId(), null));
             user = Database.getUser(user.getId(), true);
             initialize(null, null);
             addCoursePane.setVisible(false);
             homepagePane.setVisible(true);
         }catch (RuntimeException e){
+            e.printStackTrace();
             errorLessonLabel.setText(e.getMessage());
         }
     }
@@ -318,6 +334,28 @@ public class HomePageController implements Initializable {
         }
         if(user.getRole().equals("Teacher")){
             addNewCourseButton.setVisible(true);
+        }
+
+        for(Lesson lesson: user.getLessons()){
+            for (Assignment assignment: lesson.getAssignments()){
+                if (ChronoUnit.DAYS.between(assignment.getEndDate(), LocalDateTime.now()) <= 14){
+                    Label eventLabel = new Label("Assignment: " + assignment.getTitle() + "(" + lesson.getTitle() + ")" +
+                            "\nDeadline: " + assignment.getEndDate().toString().replace("T", " "));
+                    eventLabel.setWrapText(true);
+                    eventLabel.setFont(new Font("System", 15));
+                    eventBox.getChildren().add(eventLabel);
+                }
+            }
+
+            for (Exam exam: lesson.getExams()){
+                if (ChronoUnit.DAYS.between(exam.getStartDate(), LocalDateTime.now()) <= 14){
+                    Label eventLabel = new Label("Exam: " + exam.getTitle() + "(" + lesson.getTitle() + ")" +
+                            "\nStart Time: " + exam.getStartDate().toString().replace("T", " "));
+                    eventLabel.setWrapText(true);
+                    eventLabel.setFont(new Font("System", 15));
+                    eventBox.getChildren().add(eventLabel);
+                }
+            }
         }
         studentsTableView.getColumns().clear();
         TableColumn<User, String> idColumn = new TableColumn<>("Student ID");

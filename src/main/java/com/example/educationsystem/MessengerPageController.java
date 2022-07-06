@@ -38,6 +38,8 @@ public class MessengerPageController implements Initializable {
     private TextField messageField;
     @FXML
     private Button sendButton;
+    @FXML
+    private Label titleLabel;
 
     public static void setUser(User user){
         MessengerPageController.user = user;
@@ -99,7 +101,7 @@ public class MessengerPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
             try {
-                client = new Client(new Socket("4.tcp.eu.ngrok.io", 19394), user);
+                client = new Client(new Socket("localhost", 2831), user, group);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,6 +112,8 @@ public class MessengerPageController implements Initializable {
                     messagePane.setVvalue((Double) newValue);
                 }
             });
+
+            titleLabel.setText(group.getName());
 
             messagePane.setFitToWidth(true);
             String lastMessage = "";
@@ -146,11 +150,11 @@ public class MessengerPageController implements Initializable {
                     messageBox.getChildren().add(hbox);
                 }
             }
-
             client.listenForMessage(messageBox);
     }
 
-    public static void addLabel(String message, VBox messageBox){
+    public static void addLabel(String message, VBox messageBox, MessengerGroup messengerGroup){
+        if (group != messengerGroup || !message.split("/,/")[2].equals(String.valueOf(group.getLessonId()))) return;
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER_LEFT);
 

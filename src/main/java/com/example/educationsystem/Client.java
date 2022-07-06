@@ -15,13 +15,15 @@ public class Client {
     private User user;
     private VBox messageBox;
     private Thread messageListener;
+    private MessengerGroup messengerGroup;
 
-    public Client(Socket socket, User user) {
+    public Client(Socket socket, User user, MessengerGroup messengerGroup) {
         try {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.user = user;
+            this.messengerGroup = messengerGroup;
         }catch (IOException e){
             e.printStackTrace();
             closeEverything();
@@ -31,7 +33,7 @@ public class Client {
     public void sendMessage(String message){
         try{
             bufferedWriter.write(user.getUsername() + ": " + message + "      " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")) +
-                    "/,/" + user.getId());
+                    "/,/" + user.getId() + "/,/" + messengerGroup.getLessonId());
             bufferedWriter.newLine();
             bufferedWriter.flush();
         }catch (IOException e){
@@ -49,7 +51,7 @@ public class Client {
                     try{
                         receivedMessage = bufferedReader.readLine();
                         if (receivedMessage != null)
-                            MessengerPageController.addLabel(receivedMessage, messageBox);
+                            MessengerPageController.addLabel(receivedMessage, messageBox, messengerGroup);
                     }catch (IOException e){
                         closeEverything();
                         break;
