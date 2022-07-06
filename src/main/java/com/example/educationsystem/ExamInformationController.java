@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,10 +44,30 @@ public class ExamInformationController implements Initializable {
     private GridPane questionsPane;
 
     @FXML
+    private Button bckBtn;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private Label yourScoreLabel;
+
+    @FXML
+    public void onBckBtn(){
+        questionsPane.setVisible(false);
+        bckBtn.setVisible(false);
+        scrollPane.setVisible(false);
+        informationPane.setVisible(true);
+        backButton.setVisible(true);
+    }
+
+    @FXML
     public void onReviewClicked(){
         informationPane.setVisible(false);
         scoreLabel.setVisible(false);
         backButton.setVisible(false);
+        scrollPane.setVisible(true);
+        bckBtn.setVisible(true);
         ArrayList<Question> questions = Database.getExam(exam.getExamId()).getQuestions();
         int i = 0;
         int questionCount = 1;
@@ -118,7 +138,7 @@ public class ExamInformationController implements Initializable {
         try {
             ExamPageController.setUser(user);
             ExamPageController.setExam(exam);
-            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("exam_page.fxml")).load()));
+            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("course_page.fxml")).load()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,12 +155,12 @@ public class ExamInformationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(user.getExamsContent().containsKey(exam.getExamId())){
-            scoreLabel.setText("The score You got in this exam is " + user.getExamsContent().get(exam.getExamId()).get(0) + ".");
+
             uploadTimeLabel.setText("Uploaded time : " + user.getExamsContent().get(exam.getExamId()).get(2));
             if (((float)user.getExamsContent().get(exam.getExamId()).get(0)) < 0 ){
-                uploadTimeLabel.setText("Correction status : Corrected");
+                correctionStatusLabel.setText("Correction status : UnCorrected");
             }else{
-                uploadTimeLabel.setText("Correction status : Uncorrected");
+                correctionStatusLabel.setText("Correction status : Corrected");
             }
             ArrayList<Question> questions = exam.getQuestions();
             int totalScore = 0;
@@ -149,6 +169,11 @@ public class ExamInformationController implements Initializable {
             }
             totalScoreLabel.setText("Total score : " + totalScore);
 
+            if ((float)user.getExamsContent().get(exam.getExamId()).get(0) > 0){
+                yourScoreLabel.setText("Your score : " + user.getExamsContent().get(exam.getExamId()).get(0));
+            }else {
+                yourScoreLabel.setText("Your score : - ");
+            }
         }
     }
 }

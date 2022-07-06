@@ -74,6 +74,12 @@ public class CourseContentPageController implements Initializable {
     @FXML
     private Label contentTitleLabel;
 
+    @FXML
+    private Label errorExamLabel;
+
+    @FXML
+    private Button startExamButton;
+
 
     @FXML
     public void onBackButton(){
@@ -86,12 +92,23 @@ public class CourseContentPageController implements Initializable {
 
     @FXML
     public void onStartExamButtonClicked(){
-        try {
-            ExamPageController.setExam(Database.getExam(contentId));
-            ExamPageController.setUser(user);
-            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("exam_page.fxml")).load()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!(user.getExamsContent().containsKey(contentId))){
+            if(LocalDateTime.now().isBefore(Database.getExam(contentId).getEndDate()) &&
+                    LocalDateTime.now().isAfter(Database.getExam(contentId).getStartDate())){
+                try {
+                    ExamPageController.setExam(Database.getExam(contentId));
+                    ExamPageController.setUser(user);
+                    Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("exam_page.fxml")).load()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                errorExamLabel.setText("The time for this exam is over.");
+                startExamButton.setDisable(true);
+            }
+        }else{
+            errorExamLabel.setText("You have already taken this exam.");
+            errorExamLabel.setVisible(true);
         }
     }
 

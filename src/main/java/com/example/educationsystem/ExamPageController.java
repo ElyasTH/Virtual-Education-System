@@ -113,6 +113,8 @@ public class ExamPageController implements Initializable {
                         if(currSeconds == 0){
                             System.out.println("Finished.");
                             thread.interrupt();
+                            Main.changeScene(new Scene(new FXMLLoader(Main.class.getResource("exam_information_page.fxml")).load()));
+                            thread.stop();
                         }
                         currSeconds -= 1;
                     }
@@ -157,7 +159,7 @@ public class ExamPageController implements Initializable {
             }
         }
         LocalDateTime end = exam.getEndDate();
-        LocalDateTime start = exam.getStartDate();
+        LocalDateTime start = LocalDateTime.now();
         LocalDateTime temp = LocalDateTime.from(start);
         long hour = temp.until(end, ChronoUnit.HOURS);
         temp = temp.plusHours(hour);
