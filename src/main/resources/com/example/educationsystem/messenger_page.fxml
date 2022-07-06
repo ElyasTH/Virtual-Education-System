@@ -16,9 +16,9 @@
             <VBox fx:id="messageBox" prefHeight="225.0" prefWidth="520.0" />
          </content>
       </ScrollPane>
-      <Label fx:id="lessonLabel" alignment="CENTER" layoutX="37.0" layoutY="19.0" prefHeight="18.0" prefWidth="526.0" text="Group Name">
+      <Label fx:id="titleLabel" alignment="CENTER" layoutX="37.0" layoutY="19.0" prefHeight="18.0" prefWidth="526.0" text="Group Name">
          <font>
-            <Font size="26.0" />
+            <Font name="System Bold" size="26.0" />
          </font>
       </Label>
       <TextField fx:id="messageField" layoutX="37.0" layoutY="337.0" prefHeight="32.0" prefWidth="450.0" />
